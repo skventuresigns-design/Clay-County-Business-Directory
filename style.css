@@ -1,6 +1,6 @@
 /* --- GLOBAL STYLES --- */
 :root {
-    --paper-bg: #ffffdf;
+    --paper-bg: #fffdf5;
     --smlc-blue: #38b6ff;
 }
 
@@ -14,17 +14,17 @@ body {
 /* --- NAVIGATION --- */
 .nav-header {
     display: block !important; /* Forces it to show */
-    background-color: #38b6ff !important; /* SMLC Blue */
+    background-color: #e5e5e5 !important;
     padding: 15px 0;
     text-align: center;
-    border-bottom: 2px solid #000;
+    border-bottom: 2px solid #222222;
     width: 100%;
     position: relative;
     z-index: 999;
 }
 
 .nav-header a {
-    color: #ffffff !important;
+    color: #e5e5e5 !important;
     text-decoration: none;
     font-weight: bold;
     margin: 0 15px;
@@ -69,7 +69,7 @@ body {
 .right-meta { text-align: right; }
 
 .directory-pages {
-    border: 2px solid #000;
+    border: 2px solid #2222222;
     padding: 4px 15px;
     font-size: 1.1rem;
     display: inline-block;
@@ -91,7 +91,7 @@ body {
 /* --- CARD STYLING --- */
 .card {
     background: var(--paper-bg);
-    border: 2px solid #000;
+    border: 2px solid #222222;
     padding: 15px;
     text-align: center;
     cursor: pointer;
@@ -120,8 +120,60 @@ body {
     text-transform: uppercase;
 }
 
-/* --- MOBILE RESPONSIVENESS --- */
+/* --- MOBILE RESPONSIVENESS (Screens smaller than 768px) --- */
 @media (max-width: 768px) {
-    .newspaper-meta { flex-direction: column; }
-    .left-meta, .right-meta { text-align: center; }
+    
+    /* 1. Stack the Top Nav Links */
+    .nav-header {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        padding: 10px;
+    }
+    
+    .nav-header a {
+        margin: 5px 10px;
+        font-size: 0.8rem;
+    }
+
+    /* 2. Shrink the Giant Title */
+    .main-title h1 {
+        font-size: 2.5rem;
+        margin-top: 15px;
+    }
+
+    /* 3. Stack the 5-Column Meta Bar into 1 Column */
+    .newspaper-meta {
+        flex-direction: column;
+        margin: 10px;
+        padding: 15px 0;
+        gap: 15px;
+    }
+
+    .meta-item {
+        width: 100%;
+        text-align: center !important;
+        padding: 0;
+    }
+
+        .left-meta, .right-meta { text-align: center; }
+    }
+
+    /* 4. Make Select Boxes Full Width for easy tapping */
+    select {
+        width: 90%;
+        max-width: 300px;
+        font-size: 1rem;
+        padding: 10px;
+    }
+
+    /* 5. Adjust the Cards for Single Column */
+    #directory-grid {
+        grid-template-columns: 1fr; /* One card per row on phones */
+        padding: 0 10px;
+    }
+
+    .card {
+        margin-bottom: 10px;
+    }
 }
