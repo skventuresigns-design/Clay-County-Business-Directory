@@ -1,0 +1,113 @@
+<div id="directory-grid">
+    <p>Loading the latest business listings...</p>
+</div>
+
+<style>
+    /* 1. Layout & Grid Styling */
+    #directory-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+        gap: 30px;
+        padding: 20px 0;
+    }
+
+    /* 2. Card Styling to match your screenshot */
+    .card {
+        background-color: #fffaf0; /* Off-white */
+        border: 2px solid #000;
+        box-shadow: 10px 10px 5px rgba(0,0,0,0.2);
+        padding: 25px;
+        text-align: center;
+        cursor: pointer;
+        display: flex;
+        flex-direction: column;
+        min-height: 450px;
+        transition: transform 0.2s;
+    }
+
+    .card:hover { transform: scale(1.02); }
+
+    .logo-container {
+        height: 180px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 15px;
+    }
+
+    .logo-container img {
+        max-height: 100%;
+        max-width: 100%;
+        object-fit: contain;
+    }
+
+    /* 3. Town Color Bars */
+    .town-bar {
+        color: white;
+        font-weight: bold;
+        padding: 12px 0;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        margin: 15px 0;
+        font-size: 1.1rem;
+    }
+
+    /* Force your town colors to stick in Divi */
+    .flora-bar { background-color: #ff5500 !important; }
+    .louisville-bar { background-color: #e60000 !important; }
+    .clay-city-bar { background-color: #008000 !important; }
+    .xenia-bar { background-color: #38b6ff !important; }
+
+    .biz-name {
+        font-family: 'Times New Roman', serif;
+        font-size: 1.7rem;
+        font-weight: bold;
+        color: #000 !important;
+        margin-bottom: 10px;
+    }
+
+    .phone-row {
+        text-align: left;
+        font-size: 0.95rem;
+        font-weight: bold;
+        border-top: 1px solid #000;
+        padding-top: 15px;
+        margin-top: auto;
+        color: #000;
+    }
+</style>
+
+<script>
+    (function() {
+        // FETCH DATA FROM GITHUB (This is what keeps it updated)
+        const githubURL = 'https://raw.githubusercontent.com/KFruti88/Buisness-Directory/main/directory.json';
+
+        fetch(githubURL)
+            .then(res => {
+                if(!res.ok) throw new Error('Data file not found');
+                return res.json();
+            })
+            .then(data => {
+                const grid = document.getElementById('directory-grid');
+                
+                // Sort by town then build the cards
+                grid.innerHTML = data.sort((a,b) => a.town.localeCompare(b.town)).map(biz => `
+                    <div class="card" onclick="window.location.href='/profile?id=${biz.id}'">
+                        <div class="logo-container">
+                            <img src="${biz.logo}" onerror="this.src='https://via.placeholder.com/150?text=No+Logo'">
+                        </div>
+                        <div class="town-bar ${biz.town.toLowerCase().replace(' ', '-')}-bar">
+                            ${biz.town}
+                        </div>
+                        <div class="biz-name">${biz.name}</div>
+                        <div class="phone-row">
+                            Phone : ${biz.phone || 'N/A'}
+                        </div>
+                    </div>
+                `).join('');
+            })
+            .catch(err => {
+                document.getElementById('directory-grid').innerHTML = `<h3>Offline: ${err.message}</h3>`;
+            });
+    })();
+</script>
