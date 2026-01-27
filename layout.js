@@ -103,11 +103,27 @@ function populateCategoryFilter(data) {
 }
 
 function applyFilters() {
+    // 1. Grab the values from both dropdowns
     const townVal = document.getElementById('town-select').value;
     const catVal = document.getElementById('cat-select').value;
+    
+    // 2. Start with the full list of data
     let filtered = masterData;
-    if (townVal !== 'All') filtered = filtered.filter(b => b.town && b.town.includes(townVal));
-    if (catVal !== 'All') filtered = filtered.filter(b => b.category === catVal);
+    
+    // 3. Filter by Town (handles "Flora" vs "Flora, IL")
+    if (townVal !== 'All') {
+        filtered = filtered.filter(biz => {
+            const bizTown = biz.town ? biz.town.toLowerCase() : "";
+            return bizTown.includes(townVal.toLowerCase());
+        });
+    }
+
+    // 4. Filter by Category
+    if (catVal !== 'All') {
+        filtered = filtered.filter(biz => biz.category === catVal);
+    }
+    
+    // 5. Redraw the grid with only the matches
     displayData(filtered);
 }
 
