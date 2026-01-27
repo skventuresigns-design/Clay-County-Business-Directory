@@ -121,31 +121,31 @@ body {
 }*/
 
 /* --- UPDATED TOWN COLORS --- */
-
 .flora-bar {
-    background-color: #ff6600 !important; /* Flora Orange */
-    color: #ffffff !important;            /* White Text */
+    background-color: #ff6600 !important;
+    color: #ffffff !important;
 }
 
 .louisville-bar {
-    background-color: #cc0000 !important; /* Louisville Red */
-    color: #ffffff !important;            /* White Text */
+    background-color: #cc0000 !important;
+    color: #ffffff !important;
 }
 
 .clay-city-bar {
-    background-color: #0044cc !important; /* Clay City Blue */
-    color: #ffffff !important;            /* White Text */
+    background-color: #0044cc !important;
+    color: #ffffff !important;
 }
 
 .xenia-bar {
-    background-color: #000000 !important; /* Xenia Black */
-    color: #ffffff !important;            /* White Text */
+    background-color: #000000 !important;
+    color: #ffffff !important;
 }
 
 .sailor-springs-bar {
-    background-color: #000000 !important; /* Sailor Springs Black */
-    color: #ffffff !important;            /* White Text */
+    background-color: #000000 !important;
+    color: #ffffff !important;
 }
+
 
 /* Weather*/
 .weather-text {
