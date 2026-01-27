@@ -13,7 +13,7 @@ body {
 
 /* --- NAVIGATION --- */
 .nav-header {
-    display: block !important; /* Forces it to show */
+    display: block !important;
     background-color: #e5e5e5 !important;
     padding: 15px 0;
     text-align: center;
@@ -51,9 +51,8 @@ body {
     padding: 10px 0;
     margin: 10px 20px 30px 20px;
     background: #e5e5e5;
-    flex-wrap: wrap; /* Prevents overlap on smaller screens */
+    flex-wrap: wrap;
 }
-
 
 .meta-item {
     flex: 1;
@@ -70,13 +69,13 @@ body {
 .right-meta { text-align: right; }
 
 .directory-pages {
-    border: 2px solid #2222222;
+    border: 2px solid #222222; /* Fixed the extra '2' here */
     padding: 4px 15px;
     font-size: 1.1rem;
     display: inline-block;
 }
 
-/* --- DIRECTORY GRID (This fixes the missing cards) --- */
+/* --- DIRECTORY GRID --- */
 .site-wrapper {
     padding: 0 20px 40px 20px;
     max-width: 1200px;
@@ -124,7 +123,6 @@ body {
 /* --- MOBILE RESPONSIVENESS (Screens smaller than 768px) --- */
 @media (max-width: 768px) {
     
-    /* 1. Stack the Top Nav Links */
     .nav-header {
         display: flex;
         flex-wrap: wrap;
@@ -137,13 +135,11 @@ body {
         font-size: 0.8rem;
     }
 
-    /* 2. Shrink the Giant Title */
     .main-title h1 {
         font-size: 2.5rem;
         margin-top: 15px;
     }
 
-    /* 3. Stack the 5-Column Meta Bar into 1 Column */
     .newspaper-meta {
         flex-direction: column;
         margin: 10px;
@@ -157,10 +153,8 @@ body {
         padding: 0;
     }
 
-        .left-meta, .right-meta { text-align: center; }
-    }
+    .left-meta, .right-meta { text-align: center; }
 
-    /* 4. Make Select Boxes Full Width for easy tapping */
     select {
         width: 90%;
         max-width: 300px;
@@ -168,9 +162,8 @@ body {
         padding: 10px;
     }
 
-    /* 5. Adjust the Cards for Single Column */
     #directory-grid {
-        grid-template-columns: 1fr; /* One card per row on phones */
+        grid-template-columns: 1fr; /* This now ONLY applies to mobile */
         padding: 0 10px;
     }
 
