@@ -78,6 +78,17 @@ body {
     display: inline-block;
 }
 
+/* -- Count pages text--"/
+.count-text {
+    font-family: Times New Roman, sans-serif;
+    font-size: 0.75rem;
+    color: #222222;
+    margin-top: 5px;
+    font-style: italic;
+    text-transform: none; /* Keeps it from being all caps */
+    letter-spacing: 0.5px;
+}
+
 /* --- DIRECTORY GRID --- */
 .site-wrapper {
     padding: 0 20px 40px 20px;
