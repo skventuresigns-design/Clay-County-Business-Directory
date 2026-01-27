@@ -1,3 +1,6 @@
+/**
+ * LAYOUT.JS - The Directory Engine
+ */
 let masterData = [];
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -13,10 +16,17 @@ function initDirectory() {
         header: true,
         skipEmptyLines: 'greedy',
         complete: function(results) {
+            // Clean up the data
             masterData = results.data.filter(row => row.name && row.name.trim() !== "");
-            populateCategoryFilter(masterData);
-            displayData(masterData);
-            if (typeof setupModalClose === 'function') setupModalClose();
+            
+            // If data is found, display it
+            if (masterData.length > 0) {
+                populateCategoryFilter(masterData);
+                displayData(masterData);
+                if (typeof setupModalClose === 'function') setupModalClose();
+            } else {
+                grid.innerHTML = '<p>No data found in your Google Sheet.</p>';
+            }
         },
         error: function(err) {
             console.error("CSV Load Error:", err);
@@ -37,9 +47,11 @@ function displayData(data) {
         const tier = (biz.tier || 'basic').toLowerCase();
         card.className = `card ${tier}`;
         
-        if (tier === 'premium') {
-            card.onclick = () => openFullModal(biz.name);
-        }
+        // Premium cards link to the profile page
+        card.onclick = () => {
+            const safeName = encodeURIComponent(biz.name);
+            window.location.href = `profile.html?biz=${safeName}`;
+        };
 
         card.innerHTML = `
             <div class="logo-box">${getSmartImage(biz.imageid)}</div>
@@ -52,9 +64,9 @@ function displayData(data) {
 }
 
 function getSmartImage(id) {
-    if (!id || id === "N/A" || id.trim() === "") return `<img src="${placeholderImg}" alt="Logo">`;
+    if (!id || id === "N/A" || id.trim() === "") return `<img src="images/placeholder.png" alt="Logo">`;
     if (id.startsWith('http')) return `<img src="${id}" alt="Logo">`;
-    return `<img src="https://lh3.googleusercontent.com/d/$${id.trim()}" alt="Logo" onerror="this.src='${placeholderImg}'">`;
+    return `<img src="https://lh3.googleusercontent.com/d/${id.trim()}" alt="Logo" onerror="this.src='images/placeholder.png'">`;
 }
 
 function populateCategoryFilter(data) {
