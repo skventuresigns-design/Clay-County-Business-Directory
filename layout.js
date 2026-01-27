@@ -69,19 +69,31 @@ function displayData(data) {
 
 // 4. THE FILTERING ENGINE (Dropdown Logic)
 function applyFilters() {
+    // 1. Get the current values from the dropdowns
     const townVal = document.getElementById('town-select').value;
     const catVal = document.getElementById('cat-select').value;
     
+    // 2. Start with the full master list of businesses
     let filtered = masterData.filter(biz => {
-        // Town Check (Matches "Flora" or "All")
-        const matchesTown = (townVal === 'All' || (biz.town && biz.town.includes(townVal)));
         
-        // Category Check
-        const matchesCat = (catVal === 'All' || biz.category === catVal);
+        // --- TOWN FILTER LOGIC ---
+        // If 'All' is selected, everyone passes. 
+        // Otherwise, check if the town in the sheet includes the selected town.
+        const bizTown = (biz.town || "").toLowerCase();
+        const selectedTown = townVal.toLowerCase();
+        const matchesTown = (townVal === 'All' || bizTown.includes(selectedTown));
         
+        // --- CATEGORY FILTER LOGIC ---
+        // If 'All' is selected, everyone passes.
+        // Otherwise, must be an exact match to the category name.
+        const bizCat = (biz.category || "");
+        const matchesCat = (catVal === 'All' || bizCat === catVal);
+        
+        // Both conditions must be true for the card to show
         return matchesTown && matchesCat;
     });
     
+    // 3. Re-draw the directory grid with the filtered results
     displayData(filtered);
 }
 
