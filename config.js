@@ -1,14 +1,28 @@
-// 1. Your Google Sheet CSV link
-const baseCsvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRDgQs5fH6y8PWw9zJ7_3237SB2lxlsx8Gnw8o8xvTr94vVtWwzs6qqidajKbPepQDS36GNo97bX_4b/pub?gid=0&single=true&output=csv"; 
+/**
+ * CONFIG.JS - Global Settings & Data
+ */
 
-// 2. Updated to look in YOUR images folder
+// 1. Your NEW Google Sheet CSV link
+const baseCsvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSHo8m-VL73xWyDrXNDjsIZbhSOvIibF-2jIGVAJdCjvV5YyFv2as07dprg8G0jMw/pub?output=csv"; 
+
+// 2. Local images folder path
 const placeholderImg = "images/placeholder.png";
 
 const catEmojis = {
-    "Automotive": "🚗", "Beauty": "💇‍♀️", "Construction": "🏗️", "Dining": "🍔",
-    "Entertainment": "🍿", "Financial": "💵", "Health": "🏥", "Legal": "⚖️",
-    "Manufacturing": "🏭", "Real Estate": "🏠", "Retail": "🛍️", "Services": "🤝",
-    "Technology": "💻", "Other": "📁"
+    "Automotive": "🚗",
+    "Beauty": "💇‍♀️",
+    "Construction": "🏗️",
+    "Dining": "🍔",
+    "Entertainment": "🍿",
+    "Financial": "💵",
+    "Health": "🏥",
+    "Legal": "⚖️",
+    "Manufacturing": "🏭",
+    "Real Estate": "🏠",
+    "Retail": "🛍️",
+    "Services": "🤝",
+    "Technology": "💻",
+    "Other": "📁"
 };
 
 function mapCategory(cat) {
