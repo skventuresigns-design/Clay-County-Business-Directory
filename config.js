@@ -9,7 +9,7 @@ const baseCsvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSHo8m-VL73x
 const placeholderImg = "images/placeholder.png";
 
 const catEmojis = {
-    "Agriculture": "🚜"
+    "Agriculture": "🚜",
     "Automotive": "🚗",
     "Beauty": "💇‍♀️",
     "Construction": "🏗️",
