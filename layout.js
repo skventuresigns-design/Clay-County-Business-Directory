@@ -103,27 +103,31 @@ function populateCategoryFilter(data) {
 }
 
 function applyFilters() {
-    // 1. Grab the values from both dropdowns
+    // 1. Grab values from dropdowns
     const townVal = document.getElementById('town-select').value;
     const catVal = document.getElementById('cat-select').value;
     
-    // 2. Start with the full list of data
+    console.log("Filtering for:", townVal, catVal); // This helps us troubleshoot
+
     let filtered = masterData;
-    
-    // 3. Filter by Town (handles "Flora" vs "Flora, IL")
+
+    // 2. Filter by Town
     if (townVal !== 'All') {
         filtered = filtered.filter(biz => {
-            const bizTown = biz.town ? biz.town.toLowerCase() : "";
-            return bizTown.includes(townVal.toLowerCase());
+            if (!biz.town) return false;
+            // This checks if the town in your sheet contains the dropdown selection
+            return biz.town.toLowerCase().includes(townVal.toLowerCase());
         });
     }
 
-    // 4. Filter by Category
+    // 3. Filter by Category
     if (catVal !== 'All') {
-        filtered = filtered.filter(biz => biz.category === catVal);
+        filtered = filtered.filter(biz => {
+            return biz.category === catVal;
+        });
     }
-    
-    // 5. Redraw the grid with only the matches
+
+    // 4. Update the grid
     displayData(filtered);
 }
 
