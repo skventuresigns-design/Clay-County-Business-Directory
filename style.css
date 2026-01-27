@@ -1,0 +1,196 @@
+/* --- 1. BASE STYLES & NAV --- */
+body { 
+    background-color: #e5e5e5; /* Consistent light gray background */
+    font-family: 'Times New Roman', Times, serif; 
+    margin: 0; 
+    padding: 0; 
+}
+
+.nav-header { 
+    background-color: #e5e5e5; 
+    color: #222222; 
+    padding: 12px 0; 
+    text-align: center; 
+    font-size: 0.9rem; 
+    font-weight: bold; 
+    width: 100%; 
+    position: relative; 
+    z-index: 100;
+    border-bottom: 2px solid #222222;
+}
+.nav-header a { 
+    color: #222222; 
+    text-decoration: none;
+    margin: 0 15px; 
+}
+
+/* --- 2. NEWSPAPER HEADER --- */
+.main-title {
+    text-align: center; 
+    padding: 20px 20px;
+    background-color: #e5e5e5; 
+    border-bottom: 2px solid #222222;
+}
+.main-title h1 { 
+    font-size: 4rem; 
+    margin: 0 0 10px 0; 
+    color: #000; 
+}
+
+.single-row {
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center;
+    border-top: 2px solid #000; 
+    border-bottom: 1px solid #000;
+    padding: 10px 0; 
+    font-family: 'Times New Roman', serif;
+    font-weight: bold; 
+    gap: 10px; 
+    background-color: #e5e5e5;
+}
+
+.directory-pages { 
+    text-decoration: underline; 
+    font-size: 1.2rem; 
+    text-transform: uppercase; 
+}
+
+.meta-item { 
+    flex: 1; 
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    white-space: nowrap; 
+}
+.left-meta { justify-content: flex-start; text-transform: uppercase; font-size: 0.9rem; }
+.right-meta { justify-content: flex-end; }
+
+.single-row select {
+    padding: 5px 10px; 
+    border: 1px solid #000; 
+    background: #fff; 
+    cursor: pointer;
+}
+
+/* --- 3. RESPONSIVE GRID SYSTEM --- */
+.site-wrapper { 
+    width: 95%; 
+    max-width: 2500px; /* Locked for Ultra-Wide support */
+    margin: 0 auto; 
+    padding: 20px 0; 
+}
+
+#directory-grid { 
+    display: grid; 
+    /* Core Responsiveness: creates as many columns as will fit at min 300px */
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); 
+    gap: 20px; 
+}
+
+/* --- 4. CARD STYLES & TIERED LOGIC --- */
+.card { 
+    background-color: #fffdf5 !important; /* Newspaper page color */
+    border: 2px solid #000; 
+    box-shadow: 6px 6px 0px rgba(0,0,0,0.1); 
+    padding: 20px; 
+    text-align: center; 
+    display: flex; 
+    flex-direction: column; 
+    justify-content: space-between;
+    height: 380px; 
+    position: relative; 
+    box-sizing: border-box; 
+    overflow: hidden; 
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease, height 0.4s ease;
+}
+
+.card:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 10px 10px 20px rgba(0,0,0,0.2);
+    z-index: 20; 
+}
+
+.coupon-badge { 
+    position: absolute; 
+    top: 10px; 
+    left: 10px; 
+    width: 65px; 
+    z-index: 15; 
+    filter: drop-shadow(2px 2px 2px rgba(0,0,0,0.2));
+}
+
+.card.premium { cursor: pointer; }
+.card.premium::after {
+    content: ""; position: absolute; top: -50%; left: -100%; width: 30%; height: 200%;
+    background: rgba(255, 255, 255, 0.4); transform: rotate(30deg);
+    animation: infiniteShine 4s infinite linear; pointer-events: none;
+    z-index: 5;
+}
+@keyframes infiniteShine { 0% { left: -100%; } 20% { left: 150%; } 100% { left: 150%; } }
+
+.plus-reveal { 
+    max-height: 0; 
+    overflow: hidden; 
+    transition: max-height 0.4s ease; 
+    background: #fff; 
+    margin-top: auto; 
+}
+.card.plus.expanded { height: auto; min-height: 430px; }
+.card.plus.expanded .plus-reveal { max-height: 200px; padding: 15px; border-top: 1px solid #000; }
+
+/* --- 5. ASSETS & TOWN BARS --- */
+.logo-box { height: 120px; display: flex; align-items: center; justify-content: center; }
+.logo-box img { max-height: 100%; max-width: 100%; object-fit: contain; }
+
+.town-bar { color: white; font-weight: 900; padding: 8px; text-transform: uppercase; border: 2px solid #000; margin: 15px 0; text-align: center; font-size: 0.9rem; }
+.flora-bar { background-color: #fe4f00 !important; }
+.louisville-bar { background-color: #eb1c24 !important; }
+.clay-city-bar { background-color: #0c30f0 !important; }
+.xenia-bar { background-color: #000000 !important; }
+.sailor-springs-bar { background-color: #a020f0 !important; }
+
+.tier-badge { 
+    position: absolute; top: 5px; right: 5px; font-size: 0.6rem; 
+    padding: 2px 8px; font-weight: bold; border: 1px solid #000; 
+    background: #fff; z-index: 10;
+}
+
+/* --- 6. SCREEN-SPECIFIC TWEAKS (MEDIA QUERIES) --- */
+
+/* TABLETS & LAPTOPS */
+@media (min-width: 768px) {
+    #directory-grid { gap: 25px; }
+    .main-title h1 { font-size: 5rem; }
+}
+
+/* DESKTOPS & TV */
+@media (min-width: 1200px) {
+    #directory-grid {
+        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+        gap: 30px;
+    }
+}
+
+/* ULTRA-WIDE MONITORS */
+@media (min-width: 2000px) {
+    #directory-grid {
+        grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+    }
+}
+
+/* MOBILE FIXES */
+@media (max-width: 600px) {
+    .single-row {
+        flex-direction: column; 
+        height: auto;
+        padding: 15px;
+    }
+    .meta-item {
+        width: 100%;
+        justify-content: center !important;
+        margin-bottom: 10px;
+    }
+    .main-title h1 { font-size: 2.5rem; }
+    .right-meta div { width: 100% !important; }
+}
