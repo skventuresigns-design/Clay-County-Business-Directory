@@ -18,33 +18,32 @@
         <a href="https://supportmylocalcommunity.com/xenia/">Xenia</a>
     </div>
 
-    <header class="main-title">
-        <h1>Clay County Directory</h1>
-        <div class="newspaper-meta single-row">
-            <div class="meta-item left-meta">VOL. 1 — NO. 1 | January 27, 2026</div>
-            <div class="meta-item">
-                <select id="town-select" onchange="applyFilters()">
-                    <option value="All">📍 All Towns</option>
-                    <option value="Flora">Flora</option>
-                    <option value="Louisville">Louisville</option>
-                    <option value="Clay City">Clay City</option>
-                    <option value="Xenia">Xenia</option>
-                    <option value="Sailor Springs">Sailor Springs</option>
+   <header class="main-title">
+    <h1>Clay County Directory</h1>
+    <div class="newspaper-meta single-row">
+        <div class="meta-item left-meta">VOL. 1 — NO. 1 | January 27, 2026</div>
+        
+        <div class="meta-item">
+            <select id="town-select" onchange="applyFilters()">
+                <option value="All">📍 All Towns</option>
                 </select>
-            </div>
-            <div class="meta-item center-header">
-                <span class="directory-pages">BUSINESS DIRECTORY PAGES</span>
-            </div>
-            <div class="meta-item">
-                <select id="cat-select" onchange="applyFilters()">
-                    <option value="All">📂 All Industries</option>
-                </select>
-            </div>
-            <div class="meta-item right-meta">
-                CLAY COUNTY, IL
-            </div>
         </div>
-    </header>
+        
+        <div class="meta-item center-header">
+            <span class="directory-pages">BUSINESS DIRECTORY PAGES</span>
+        </div>
+        
+        <div class="meta-item">
+            <select id="cat-select" onchange="applyFilters()">
+                <option value="All">📂 All Industries</option>
+            </select>
+        </div>
+        
+        <div class="meta-item right-meta">
+            CLAY COUNTY, IL
+        </div>
+    </div>
+</header>
 
     <div class="site-wrapper">
         <div id="directory-grid"></div>
