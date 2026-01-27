@@ -49,8 +49,8 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-top: 1px solid #222222;    /* Single solid line on top */
-    border-bottom: 1px solid #222222; /* Single solid line on bottom */
+    border-top: 3px solid #222222;    /* Single solid line on top */
+    border-bottom: 3px solid #222222; /* Single solid line on bottom */
     padding: 15px 0;                  /* Space between the lines */
     background-color: #e5e5e5;        /* Your light gray background */
     margin-bottom: 40px;
