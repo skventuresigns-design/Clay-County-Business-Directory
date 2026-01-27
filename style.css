@@ -1,11 +1,39 @@
-/* --- THE NEWSPAPER HEADER ENGINE --- */
+/* --- GLOBAL STYLES --- */
+:root {
+    --paper-bg: #ffffdf;
+    --smlc-blue: #38b6ff;
+}
 
+body {
+    background-color: #d1d5db;
+    font-family: 'Times New Roman', Times, serif;
+    margin: 0;
+    padding: 0;
+}
+
+/* --- NAVIGATION --- */
+.nav-header {
+    background-color: var(--smlc-blue);
+    padding: 12px 0;
+    text-align: center;
+    border-bottom: 2px solid #000;
+}
+
+.nav-header a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    margin: 0 15px;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+}
+
+/* --- NEWSPAPER HEADER & META --- */
 .main-title h1 {
     text-align: center;
-    font-size: 4rem;
-    margin: 20px 0 10px 0;
+    font-size: clamp(2rem, 8vw, 4.5rem);
+    margin: 20px 0 5px 0;
     text-transform: uppercase;
-    font-family: 'Times New Roman', serif;
     letter-spacing: -2px;
 }
 
@@ -13,50 +41,82 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-top: 3px double #000; /* Double line for that classic look */
+    border-top: 3px double #000;
     border-bottom: 3px double #000;
-    padding: 12px 0;
-    margin: 10px 20px 40px 20px;
-    background-color: #fff;
+    padding: 10px 0;
+    margin: 10px 20px 30px 20px;
+    background: #fff;
+    flex-wrap: wrap; /* Prevents overlap on smaller screens */
 }
 
 .meta-item {
     flex: 1;
+    min-width: 150px;
+    text-align: center;
     font-weight: bold;
     font-size: 0.85rem;
     text-transform: uppercase;
-    font-family: Arial, Helvetica, sans-serif;
-    color: #000;
+    font-family: Arial, sans-serif;
+    padding: 5px;
 }
 
-/* Specific alignment for the items */
 .left-meta { text-align: left; }
 .right-meta { text-align: right; }
-.center-header { flex: 1.5; text-align: center; }
 
 .directory-pages {
     border: 2px solid #000;
-    padding: 4px 20px;
-    font-size: 1.2rem;
+    padding: 4px 15px;
+    font-size: 1.1rem;
     display: inline-block;
-    background: #fff;
 }
 
-/* Town & Category Select Styling */
-select {
-    font-family: 'Times New Roman', serif;
-    padding: 5px 10px;
-    border: 1px solid #000;
-    font-weight: bold;
+/* --- DIRECTORY GRID (This fixes the missing cards) --- */
+.site-wrapper {
+    padding: 0 20px 40px 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+#directory-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+/* --- CARD STYLING --- */
+.card {
+    background: var(--paper-bg);
+    border: 2px solid #000;
+    padding: 15px;
+    text-align: center;
     cursor: pointer;
+    transition: transform 0.2s;
+    box-shadow: 5px 5px 0px rgba(0,0,0,0.1);
 }
 
-/* Mobile Fix: Stacks the headers so they don't overlap on phones */
-@media (max-width: 900px) {
-    .newspaper-meta {
-        flex-direction: column;
-        gap: 15px;
-        border-top: 2px solid #000;
-    }
+.card:hover { transform: translateY(-5px); }
+
+.logo-box {
+    height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px;
+}
+
+.logo-box img { max-width: 100%; max-height: 100%; }
+
+.town-bar {
+    background: #000;
+    color: #fff;
+    padding: 5px;
+    margin: 10px -15px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+/* --- MOBILE RESPONSIVENESS --- */
+@media (max-width: 768px) {
+    .newspaper-meta { flex-direction: column; }
     .left-meta, .right-meta { text-align: center; }
 }
