@@ -46,13 +46,14 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-top: 3px double #000;
-    border-bottom: 3px double #000;
+    border-top: 3px double #222222;
+    border-bottom: 3px double #222222;
     padding: 10px 0;
     margin: 10px 20px 30px 20px;
-    background: #fff;
+    background: #e5e5e5;
     flex-wrap: wrap; /* Prevents overlap on smaller screens */
 }
+
 
 .meta-item {
     flex: 1;
