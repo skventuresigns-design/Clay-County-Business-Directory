@@ -5,13 +5,17 @@
 
 let masterData = [];
 
-// 1. STARTUP
+// 1. DATA SOURCE & CONFIG
+const baseCsvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSOri1Xv-jHW8JnLbK0lBG_Or0e99RcIXqoBHc31HE5RxppszjFz3akDCHXaZxFmrepuCOUTD9jLL0B/pub?gid=0&single=true&output=csv";
+const mediaRepoBase = "https://raw.githubusercontent.com/skventuresigns-design/media/main/";
+
+// 2. STARTUP
 document.addEventListener('DOMContentLoaded', () => {
     initDirectory();
     getLocalWeather();
 });
 
-// 2. FETCH DATA FROM GOOGLE SHEET
+// 3. FETCH DATA FROM GOOGLE SHEET
 function initDirectory() {
     const grid = document.getElementById('directory-grid');
     if (grid) grid.innerHTML = '<p style="text-align:center;">Loading Community Data...</p>';
@@ -37,90 +41,94 @@ function initDirectory() {
     });
 }
 
-// 3. RENDER THE LISTINGS
+// 4. RENDER THE LISTINGS (With Tiered Logic)
 function displayData(data) {
     const grid = document.getElementById('directory-grid');
-    const countElement = document.getElementById('listing-count'); // The new counter
+    const countElement = document.getElementById('listing-count');
     
     if (!grid) return;
     grid.innerHTML = '';
 
-    // Update the counter text
     if (countElement) {
         countElement.innerText = `Showing ${data.length} Local Businesses`;
     }
 
     data.forEach(biz => {
-        // Town Formatting for the Card Bar
+        // Town Formatting
         const townRaw = (biz.town || "Clay County").trim().split(',')[0];
         const townClean = townRaw.replace(" IL", "").trim();
         const townClass = townClean.toLowerCase().replace(/\s+/g, '-');
         
-        const card = document.createElement('div');
+        // Tier Logic
         const tier = (biz.tier || 'basic').toLowerCase();
+        const card = document.createElement('div');
         card.className = `card ${tier}`;
         
-        card.onclick = () => {
-            window.location.href = `profile.html?biz=${encodeURIComponent(biz.name)}`;
-        };
-
-        card.innerHTML = `
+        // Content Setup based on Tier
+        let cardContent = `
             <div class="logo-box">${getSmartImage(biz.imageid)}</div>
             <h3>${biz.name}</h3>
             <div class="town-bar ${townClass}-bar">${townClean}</div>
-            <p>${biz.phone || ''}</p>
         `;
+
+        // PLUS & PREMIUM get the phone number
+        if (tier === 'plus' || tier === 'premium') {
+            cardContent += `<p class="phone-number">${biz.phone || ''}</p>`;
+        }
+
+        // PREMIUM gets the Category and the Read More button
+        if (tier === 'premium') {
+            cardContent += `
+                <p class="category-text"><i>${biz.category || ''}</i></p>
+                <button class="read-more-btn" onclick="openPremiumModal('${encodeURIComponent(biz.name)}')">Read More</button>
+            `;
+        } else {
+            // Basic and Plus show Category at the bottom as discussed
+            cardContent += `<p class="category-tag">${biz.category || ''}</p>`;
+        }
+
+        card.innerHTML = cardContent;
         grid.appendChild(card);
     });
 }
 
-// 4. THE FILTERING ENGINE (Dropdown Logic)
+// 5. SMART IMAGE HANDLER (Points to your Media Repo)
+function getSmartImage(id) {
+    const placeholder = "https://via.placeholder.com/150?text=SMLC";
+
+    if (!id || id === "N/A" || id.trim() === "") {
+        return `<img src="${placeholder}" alt="Logo">`;
+    }
+    
+    // If it's a direct web link (e.g. from Facebook)
+    if (id.startsWith('http')) {
+        return `<img src="${id}" alt="Logo" onerror="this.src='${placeholder}'">`;
+    }
+
+    // Default: Pull from your specific GitHub media repository
+    return `<img src="${mediaRepoBase}${id.trim()}" alt="Logo" onerror="this.src='${placeholder}'">`;
+}
+
+// 6. THE FILTERING ENGINE
 function applyFilters() {
-    // 1. Get the current values from the dropdowns
     const townVal = document.getElementById('town-select').value;
     const catVal = document.getElementById('cat-select').value;
     
-    // 2. Start with the full master list of businesses
     let filtered = masterData.filter(biz => {
-        
-        // --- TOWN FILTER LOGIC ---
-        // If 'All' is selected, everyone passes. 
-        // Otherwise, check if the town in the sheet includes the selected town.
         const bizTown = (biz.town || "").toLowerCase();
         const selectedTown = townVal.toLowerCase();
         const matchesTown = (townVal === 'All' || bizTown.includes(selectedTown));
         
-        // --- CATEGORY FILTER LOGIC ---
-        // If 'All' is selected, everyone passes.
-        // Otherwise, must be an exact match to the category name.
         const bizCat = (biz.category || "");
         const matchesCat = (catVal === 'All' || bizCat === catVal);
         
-        // Both conditions must be true for the card to show
         return matchesTown && matchesCat;
     });
     
-    // 3. Re-draw the directory grid with the filtered results
     displayData(filtered);
 }
 
-// 5. SMART IMAGE HANDLER (Prevents 404 Errors)
-function getSmartImage(id) {
-    // If ID is missing, use a web-safe placeholder
-    if (!id || id === "N/A" || id.trim() === "") {
-        return `<img src="https://via.placeholder.com/150?text=SMLC" alt="Logo">`;
-    }
-    
-    // If it's a direct web link
-    if (id.startsWith('http')) {
-        return `<img src="${id}" alt="Logo" onerror="this.src='https://via.placeholder.com/150?text=SMLC'">`;
-    }
-
-    // Default: Try to pull as a Google ID
-    return `<img src="https://googleusercontent.com/profile/picture/${id.trim()}" alt="Logo" onerror="this.src='https://via.placeholder.com/150?text=SMLC'">`;
-}
-
-// 6. DYNAMIC CATEGORY DROPDOWN
+// 7. DYNAMIC CATEGORY DROPDOWN
 function populateCategoryFilter(data) {
     const select = document.getElementById('cat-select');
     if (!select) return;
@@ -130,12 +138,14 @@ function populateCategoryFilter(data) {
     categories.forEach(cat => {
         const opt = document.createElement('option');
         opt.value = cat;
-        opt.textContent = `${catEmojis[cat] || '📁'} ${cat}`;
+        // Using catEmojis if defined, otherwise default folder
+        const emoji = (typeof catEmojis !== 'undefined' && catEmojis[cat]) ? catEmojis[cat] : '📁';
+        opt.textContent = `${emoji} ${cat}`;
         select.appendChild(opt);
     });
 }
 
-// 7. WEATHER WIDGET
+// 8. WEATHER WIDGET
 async function getLocalWeather() {
     const weatherBox = document.getElementById('weather-box');
     if (!weatherBox) return;
@@ -146,4 +156,11 @@ async function getLocalWeather() {
             weatherBox.innerHTML = ` | 🌡️ Flora: ${Math.round((data.current_weather.temperature * 9/5) + 32)}°F`;
         }
     } catch (e) { console.log("Weather failed"); }
+}
+
+// 9. PREMIUM MODAL (Placeholder for now)
+function openPremiumModal(bizName) {
+    console.log("Opening details for:", decodeURIComponent(bizName));
+    // We will build this pop-out functionality next!
+    alert("Full Profile for " + decodeURIComponent(bizName) + " coming soon!");
 }
