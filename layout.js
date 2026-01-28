@@ -6,7 +6,10 @@
 let masterData = [];
 
 // 1. DATA SOURCE & CONFIG
-const baseCsvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSOri1Xv-jHW8JnLbK0lBG_Or0e99RcIXqoBHc31HE5RxppszjFz3akDCHXaZxFmrepuCOUTD9jLL0B/pub?gid=0&single=true&output=csv";
+// NOTE: baseCsvUrl should be defined in config.js. 
+// If it's NOT in config.js, uncomment the line below:
+// const baseCsvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSOri1Xv-jHW8JnLbK0lBG_Or0e99RcIXqoBHc31HE5RxppszjFz3akDCHXaZxFmrepuCOUTD9jLL0B/pub?gid=0&single=true&output=csv";
+
 const mediaRepoBase = "https://raw.githubusercontent.com/skventuresigns-design/media/main/";
 
 // 2. STARTUP
@@ -20,12 +23,17 @@ function initDirectory() {
     const grid = document.getElementById('directory-grid');
     if (grid) grid.innerHTML = '<p style="text-align:center;">Loading Community Data...</p>';
 
+    // Ensure PapaParse has a URL to work with
+    if (typeof baseCsvUrl === 'undefined') {
+        console.error("Error: baseCsvUrl is not defined in config.js or layout.js");
+        return;
+    }
+
     Papa.parse(baseCsvUrl, {
         download: true,
         header: true,
         skipEmptyLines: 'greedy',
         complete: function(results) {
-            // Clean out any rows that don't have a name
             masterData = results.data.filter(row => row.name && row.name.trim() !== "");
             
             if (masterData.length > 0) {
@@ -41,7 +49,7 @@ function initDirectory() {
     });
 }
 
-// 4. RENDER THE LISTINGS (With Tiered Logic)
+// 4. RENDER THE LISTINGS
 function displayData(data) {
     const grid = document.getElementById('directory-grid');
     const countElement = document.getElementById('listing-count');
@@ -54,36 +62,30 @@ function displayData(data) {
     }
 
     data.forEach(biz => {
-        // Town Formatting
         const townRaw = (biz.town || "Clay County").trim().split(',')[0];
         const townClean = townRaw.replace(" IL", "").trim();
         const townClass = townClean.toLowerCase().replace(/\s+/g, '-');
         
-        // Tier Logic
         const tier = (biz.tier || 'basic').toLowerCase();
         const card = document.createElement('div');
         card.className = `card ${tier}`;
         
-        // Content Setup based on Tier
         let cardContent = `
             <div class="logo-box">${getSmartImage(biz.imageid)}</div>
             <h3>${biz.name}</h3>
             <div class="town-bar ${townClass}-bar">${townClean}</div>
         `;
 
-        // PLUS & PREMIUM get the phone number
         if (tier === 'plus' || tier === 'premium') {
             cardContent += `<p class="phone-number">${biz.phone || ''}</p>`;
         }
 
-        // PREMIUM gets the Category and the Read More button
         if (tier === 'premium') {
             cardContent += `
                 <p class="category-text"><i>${biz.category || ''}</i></p>
-                <button class="read-more-btn" onclick="openPremiumModal('${encodeURIComponent(biz.name)}')">Read More</button>
+                <button class="read-more-btn" onclick="event.stopPropagation(); openPremiumModal('${encodeURIComponent(biz.name)}')">Read More</button>
             `;
         } else {
-            // Basic and Plus show Category at the bottom as discussed
             cardContent += `<p class="category-tag">${biz.category || ''}</p>`;
         }
 
@@ -92,7 +94,7 @@ function displayData(data) {
     });
 }
 
-// 5. SMART IMAGE HANDLER (Points to your Media Repo)
+// 5. SMART IMAGE HANDLER
 function getSmartImage(id) {
     const placeholder = "https://via.placeholder.com/150?text=SMLC";
 
@@ -100,35 +102,14 @@ function getSmartImage(id) {
         return `<img src="${placeholder}" alt="Logo">`;
     }
     
-    // If it's a direct web link (e.g. from Facebook)
     if (id.startsWith('http')) {
         return `<img src="${id}" alt="Logo" onerror="this.src='${placeholder}'">`;
     }
 
-    // Default: Pull from your specific GitHub media repository
     return `<img src="${mediaRepoBase}${id.trim()}" alt="Logo" onerror="this.src='${placeholder}'">`;
 }
 
-// 6. THE FILTERING ENGINE
-function applyFilters() {
-    const townVal = document.getElementById('town-select').value;
-    const catVal = document.getElementById('cat-select').value;
-    
-    let filtered = masterData.filter(biz => {
-        const bizTown = (biz.town || "").toLowerCase();
-        const selectedTown = townVal.toLowerCase();
-        const matchesTown = (townVal === 'All' || bizTown.includes(selectedTown));
-        
-        const bizCat = (biz.category || "");
-        const matchesCat = (catVal === 'All' || bizCat === catVal);
-        
-        return matchesTown && matchesCat;
-    });
-    
-    displayData(filtered);
-}
-
-// 7. DYNAMIC CATEGORY DROPDOWN
+// 6. DYNAMIC CATEGORY DROPDOWN
 function populateCategoryFilter(data) {
     const select = document.getElementById('cat-select');
     if (!select) return;
@@ -138,14 +119,14 @@ function populateCategoryFilter(data) {
     categories.forEach(cat => {
         const opt = document.createElement('option');
         opt.value = cat;
-        // Using catEmojis if defined, otherwise default folder
-        const emoji = (typeof catEmojis !== 'undefined' && catEmojis[cat]) ? catEmojis[cat] : '📁';
+        // Check if catEmojis exists in config.js, otherwise use default
+        const emoji = (window.catEmojis && window.catEmojis[cat]) ? window.catEmojis[cat] : '📁';
         opt.textContent = `${emoji} ${cat}`;
         select.appendChild(opt);
     });
 }
 
-// 8. WEATHER WIDGET
+// 7. WEATHER WIDGET
 async function getLocalWeather() {
     const weatherBox = document.getElementById('weather-box');
     if (!weatherBox) return;
@@ -158,9 +139,7 @@ async function getLocalWeather() {
     } catch (e) { console.log("Weather failed"); }
 }
 
-// 9. PREMIUM MODAL (Placeholder for now)
+// 8. PREMIUM MODAL
 function openPremiumModal(bizName) {
-    console.log("Opening details for:", decodeURIComponent(bizName));
-    // We will build this pop-out functionality next!
     alert("Full Profile for " + decodeURIComponent(bizName) + " coming soon!");
 }
