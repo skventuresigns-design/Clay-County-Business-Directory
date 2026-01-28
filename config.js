@@ -12,14 +12,21 @@ const catEmojis = {
     "Agriculture": "🚜",
     "Automotive": "🚗",
     "Beauty": "💇‍♀️",
+    "Construction": "🏗️",
     "Church": "⛪",
     "Education": "🎓"
+    "Entertainment": "🍿",
+    "Financial": "💵",
     "Government": "🏛️",
-    "Healthcare": "🏥",    
+    "Healthcare": "🏥",
+    "Legal": "⚖️",
+    "Manufacturing": "🏭",
     "Real Estate": "🏠",
     "Retail": "🛍️",
     "Restaurant": "🍴",
-    "Services": "🛠️"
+    "Services": "🛠️",
+    "Technology": "💻",
+    "Other": "📁"
 };
 
 function mapCategory(cat) {
