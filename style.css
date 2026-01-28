@@ -242,3 +242,84 @@ body {
         margin-bottom: 10px;
     }
 }
+
+
+/* Premium - Gold border and subtle "pop" */
+.card.premium {
+    border: 2px solid #d4af37;
+    box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+    transform: scale(1.02);
+    background: #fff;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Plus - Professional blue accent */
+.card.plus {
+    border: 1px solid #2a5a8a;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+/* Basic - Clean and simple */
+.card.basic {
+    border: 1px solid #ddd;
+    filter: grayscale(20%);
+}
+
+/* Hover effect for interactivity */
+.card:hover {
+    transform: translateY(-5px);
+    transition: 0.3s ease;
+}
+
+/* Premium Bage (the Ribbon)
+.card.premium::after {
+    content: "PREMIUM";
+    position: absolute;
+    top: 10px;
+    right: -30px;
+    background: #d4af37;
+    color: white;
+    font-size: 10px;
+    font-weight: bold;
+    padding: 5px 35px;
+    transform: rotate(45deg);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+/* Read More Button*/
+.read-more-btn {
+    background-color: #222; /* Dark like newsprint */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-family: 'Playfair Display', serif; /* Or your site's heading font */
+    font-weight: bold;
+    text-transform: uppercase;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 10px;
+    transition: background 0.2s;
+}
+
+.read-more-btn:hover {
+    background-color: #d4af37; /* Turns gold on hover */
+}
+
+
+/* Plus and Basic Tiers */
+.phone-number {
+    font-weight: bold;
+    color: #2a5a8a;
+    margin: 5px 0;
+}
+
+.category-tag {
+    font-size: 0.85rem;
+    color: #666;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-top: 1px solid #eee;
+    padding-top: 5px;
+    margin-top: 5px;
+}
