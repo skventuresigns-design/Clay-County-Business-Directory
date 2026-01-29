@@ -52,14 +52,14 @@ function initDirectory() {
     });
 }
 
-// 3. RENDER LISTINGS (Cleaned & Combined)
+// 3. RENDER LISTINGS
 function displayData(data) {
     const grid = document.getElementById('directory-grid');
     if (!grid) return;
     grid.innerHTML = '';
 
     data.forEach(biz => {
-        // TIER Logic
+        // TIER Logic (Handles 'tier' or 'Tier')
         const tier = (biz.tier || biz.Tier || 'basic').toLowerCase();
         
         // TOWN Logic (Handles 'town' or 'Town')
@@ -70,25 +70,27 @@ function displayData(data) {
         // IMAGE Logic (Handles 'imageid' or 'ImageID')
         const imgFile = biz.imageid || biz.ImageID || "";
 
-        // OTHER DATA
+        // DATA Logic
         const bizName = biz.name || biz.Name || "Unnamed Business";
         const bizPhone = biz.phone || biz.Phone || "";
         const bizCat = biz.category || biz.Category || "";
 
         const card = document.createElement('div');
+        // Setting the background color to your preference: #fcf6de
         card.className = `card ${tier}`;
+        card.style.backgroundColor = "#fcf6de"; 
         
         card.innerHTML = `
             <div class="logo-box">${getSmartImage(imgFile)}</div>
             <h3>${bizName}</h3>
             <div class="town-bar ${townClass}-bar">${townClean}</div>
             <p class="phone">${bizPhone}</p>
-            <p><i>${bizCat}</i></p>
+            <p class="category-tag"><i>${bizCat}</i></p>
+            ${tier === 'premium' ? `<button class="read-more-btn" onclick="openPremiumModal('${encodeURIComponent(bizName)}')">Read More</button>` : ''}
         `;
         grid.appendChild(card);
     });
 }
-
 // 4. IMAGE HANDLER
 function getSmartImage(id) {
     const placeholder = "https://via.placeholder.com/150?text=SMLC";
