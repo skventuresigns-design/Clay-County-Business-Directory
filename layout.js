@@ -196,58 +196,62 @@ function updateListingCount(count) {
     }
 }
 
-// 11. MODAL LOGIC
+// 11. MODAL LOGIC (Diagnostic Version)
 function openPremiumModal(encodedName) {
     const name = decodeURIComponent(encodedName);
-    console.log("Opening Modal for:", name); 
+    console.log("1. Logic started for:", name); 
 
-    // Find the business in our list
     const biz = masterData.find(b => (b.name || b.Name) === name);
 
     if (!biz) {
-        console.error("Could not find business data for:", name);
+        console.error("ERROR: Business not found in masterData array!");
         return;
     }
 
-    // FILL THE DATA
-    document.getElementById('modal-name').innerText = biz.name || biz.Name;
-    document.getElementById('modal-address').innerText = biz.address || biz.Address || "Contact for address";
-    document.getElementById('modal-phone').innerText = biz.phone || biz.Phone || "N/A";
-    document.getElementById('modal-category').innerText = biz.category || biz.Category || "Local Business";
+    console.log("2. Business Data Found:", biz);
+
+    // Fill Name
+    const elName = document.getElementById('modal-name');
+    if (elName) elName.innerText = biz.name || biz.Name || "Unnamed";
+
+    // Fill Address
+    const elAdd = document.getElementById('modal-address');
+    if (elAdd) elAdd.innerText = biz.address || biz.Address || "Contact for address";
+
+    // Fill Phone
+    const elPhone = document.getElementById('modal-phone');
+    if (elPhone) elPhone.innerText = biz.phone || biz.Phone || "N/A";
+
+    // Fill Category
+    const elCat = document.getElementById('modal-category');
+    if (elCat) elCat.innerText = biz.category || biz.Category || "Local Business";
     
-    // TOWN BAR COLOR LOGIC
+    // Town Bar Logic
     const town = (biz.town || biz.Town || "Clay County").trim();
     const townClass = town.toLowerCase().replace(/\s+/g, '-');
     const townBar = document.getElementById('modal-town-bar');
-    
     if (townBar) {
         townBar.innerText = town;
         townBar.className = `modal-town-bar ${townClass}-bar`;
     }
 
-    // PHONE LINK
+    // Phone Link
     const callLink = document.getElementById('modal-call-link');
-    if (callLink) {
-        callLink.href = `tel:${biz.phone || biz.Phone}`;
-    }
+    if (callLink) callLink.href = `tel:${biz.phone || biz.Phone}`;
 
-    // LOGO
+    // Logo
     const imgFile = biz.imageid || biz.ImageID || "";
     const logoBox = document.getElementById('modal-logo');
     if (logoBox) {
         logoBox.innerHTML = getSmartImage(imgFile);
     }
 
-    // SHOW THE MODAL
+    // FINAL STEP: SHOW IT
     const modal = document.getElementById('premium-modal');
     if (modal) {
         modal.style.display = 'flex';
-    }
-}
-
-function closePremiumModal() {
-    const modal = document.getElementById('premium-modal');
-    if (modal) {
-        modal.style.display = 'none';
+        console.log("3. Modal set to FLEX (Visible)");
+    } else {
+        console.error("ERROR: Could not find 'premium-modal' ID in your HTML!");
     }
 }
