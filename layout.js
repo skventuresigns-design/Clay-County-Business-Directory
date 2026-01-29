@@ -43,6 +43,7 @@ function initDirectory() {
                 populateCategoryFilter(masterData);
                 populateTownFilter(masterData);
                 displayData(masterData);
+                updateListingCount(masterData.length);
             } else {
                 grid.innerHTML = '<p>No listings found in the spreadsheet.</p>';
             }
@@ -165,6 +166,7 @@ function applyFilters() {
 
     // Send the filtered results back to the screen
     displayData(filteredData);
+    updateListingCount(filteredData.length);
 }
 
 // 9. TOWN DROPDOWN GENERATOR
@@ -183,4 +185,13 @@ function populateTownFilter(data) {
         opt.textContent = town;
         select.appendChild(opt);
     });
+}
+
+
+// 10. LISTING COUNTER
+function updateListingCount(count) {
+    const countElement = document.getElementById('listing-count');
+    if (countElement) {
+        countElement.innerText = `${count} Listings Found`;
+    }
 }
