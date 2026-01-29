@@ -213,10 +213,10 @@ function openPremiumModal(encodedName) {
         document.getElementById('modal-category').innerText = biz.category || biz.Category || "Local Business";
         
         // Update the Town Bar color
+        // This ensures the town name matches your CSS classes even if there are weird spaces
         const town = (biz.town || biz.Town || "Clay County").trim();
-        const townBar = document.getElementById('modal-town-bar');
-        townBar.innerText = town;
-        townBar.className = `modal-town-bar ${town.toLowerCase().replace(/\s+/g, '-')}-bar`;
+        const townClass = town.toLowerCase().replace(/\s+/g, '-'); // Turns "Clay City" into "clay-city"
+        townBar.className = `modal-town-bar ${townClass}-bar`;
 
         // Update Phone Link
         document.getElementById('modal-call-link').href = `tel:${biz.phone || biz.Phone}`;
