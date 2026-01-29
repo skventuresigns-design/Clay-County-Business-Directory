@@ -199,36 +199,55 @@ function updateListingCount(count) {
 // 11. MODAL LOGIC
 function openPremiumModal(encodedName) {
     const name = decodeURIComponent(encodedName);
-    console.log("Opening Modal for:", name); // Check your console (F12) for this!
+    console.log("Opening Modal for:", name); 
+
+    // Find the business in our list
     const biz = masterData.find(b => (b.name || b.Name) === name);
 
     if (!biz) {
         console.error("Could not find business data for:", name);
-        return;}
+        return;
+    }
+
+    // FILL THE DATA
+    document.getElementById('modal-name').innerText = biz.name || biz.Name;
+    document.getElementById('modal-address').innerText = biz.address || biz.Address || "Contact for address";
+    document.getElementById('modal-phone').innerText = biz.phone || biz.Phone || "N/A";
+    document.getElementById('modal-category').innerText = biz.category || biz.Category || "Local Business";
     
-    if (biz) {
-        document.getElementById('modal-name').innerText = biz.name || biz.Name;
-        document.getElementById('modal-address').innerText = biz.address || biz.Address || "Contact for address";
-        document.getElementById('modal-phone').innerText = biz.phone || biz.Phone || "N/A";
-        document.getElementById('modal-category').innerText = biz.category || biz.Category || "Local Business";
-        
-        // Update the Town Bar color
-        // This ensures the town name matches your CSS classes even if there are weird spaces
-        const town = (biz.town || biz.Town || "Clay County").trim();
-        const townClass = town.toLowerCase().replace(/\s+/g, '-'); // Turns "Clay City" into "clay-city"
+    // TOWN BAR COLOR LOGIC
+    const town = (biz.town || biz.Town || "Clay County").trim();
+    const townClass = town.toLowerCase().replace(/\s+/g, '-');
+    const townBar = document.getElementById('modal-town-bar');
+    
+    if (townBar) {
+        townBar.innerText = town;
         townBar.className = `modal-town-bar ${townClass}-bar`;
+    }
 
-        // Update Phone Link
-        document.getElementById('modal-call-link').href = `tel:${biz.phone || biz.Phone}`;
+    // PHONE LINK
+    const callLink = document.getElementById('modal-call-link');
+    if (callLink) {
+        callLink.href = `tel:${biz.phone || biz.Phone}`;
+    }
 
-        // Show Logo
-        const imgFile = biz.imageid || biz.ImageID || "";
-        document.getElementById('modal-logo').innerHTML = getSmartImage(imgFile);
+    // LOGO
+    const imgFile = biz.imageid || biz.ImageID || "";
+    const logoBox = document.getElementById('modal-logo');
+    if (logoBox) {
+        logoBox.innerHTML = getSmartImage(imgFile);
+    }
 
-        document.getElementById('premium-modal').style.display = 'flex';
+    // SHOW THE MODAL
+    const modal = document.getElementById('premium-modal');
+    if (modal) {
+        modal.style.display = 'flex';
     }
 }
 
 function closePremiumModal() {
-    document.getElementById('premium-modal').style.display = 'none';
+    const modal = document.getElementById('premium-modal');
+    if (modal) {
+        modal.style.display = 'none';
+    }
 }
