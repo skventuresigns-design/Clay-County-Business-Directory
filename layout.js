@@ -131,3 +131,19 @@ function populateCategoryFilter(data) {
         select.appendChild(opt);
     });
 }
+
+function updateMastheadDate() {
+    const dateElement = document.getElementById('masthead-date'); // Or whatever ID you used in HTML
+    if (dateElement) {
+        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        const today = new Date();
+        dateElement.innerText = today.toLocaleDateString('en-US', options);
+    }
+}
+
+// Add this line inside your existing 'DOMContentLoaded' listener
+document.addEventListener('DOMContentLoaded', () => {
+    updateMastheadDate(); // <--- Add this
+    initDirectory();
+    getLocalWeather();
+});
