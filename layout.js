@@ -52,34 +52,28 @@ function initDirectory() {
     });
 }
 
-// 3. RENDER LISTINGS
+// 3. RENDER LISTINGS (The Final Clean Version)
 function displayData(data) {
     const grid = document.getElementById('directory-grid');
     if (!grid) return;
     grid.innerHTML = '';
 
     data.forEach(biz => {
-        // TIER Logic (Handles 'tier' or 'Tier')
         const tier = (biz.tier || biz.Tier || 'basic').toLowerCase();
         
-        // TOWN Logic (Handles 'town' or 'Town')
-        const townRaw = (biz.town || biz.Town || "Clay County").trim().split(',')[0];
-        const townClean = townRaw.replace(" IL", "").trim();
+        // Town is now clean directly from Column B of Master Data!
+        const townClean = (biz.town || biz.Town || "Clay County").trim();
         const townClass = townClean.toLowerCase().replace(/\s+/g, '-');
 
-        // IMAGE Logic (Handles 'imageid' or 'ImageID')
-        const imgFile = biz.imageid || biz.ImageID || "";
-
-        // DATA Logic
         const bizName = biz.name || biz.Name || "Unnamed Business";
         const bizPhone = biz.phone || biz.Phone || "";
         const bizCat = biz.category || biz.Category || "";
+        const imgFile = biz.imageid || biz.ImageID || "";
 
         const card = document.createElement('div');
-        // Setting the background color to your preference: #fcf6de
         card.className = `card ${tier}`;
-        card.style.backgroundColor = "#fcf6de"; 
-        
+        card.style.backgroundColor = "#fcf6de"; // Your preferred listings color
+
         card.innerHTML = `
             <div class="logo-box">${getSmartImage(imgFile)}</div>
             <h3>${bizName}</h3>
@@ -91,6 +85,7 @@ function displayData(data) {
         grid.appendChild(card);
     });
 }
+
 // 4. IMAGE HANDLER
 function getSmartImage(id) {
     const placeholder = "https://via.placeholder.com/150?text=SMLC";
