@@ -399,3 +399,33 @@ body {
     overflow-y: auto; /* Allows scrolling if the content is long */
 }
 
+/* 1. The Cream Paper Background */
+.paper-texture {
+    background-color: #fcf6de; /* Your preferred color */
+    background-image: url('https://www.transparenttextures.com/patterns/paper-fibers.png'); /* Subtle paper feel */
+    border: 2px solid #222;
+    box-shadow: 15px 15px 0px rgba(0,0,0,0.1); /* The "offset" shadow look */
+}
+
+/* 2. The Newspaper Divider */
+.news-divider {
+    border: 0;
+    border-top: 3px double #222; /* Classic double-line look */
+    margin: 15px 0;
+}
+
+/* 3. The Digital Coupon Look */
+.coupon-border {
+    border: 2px dashed #444; /* The "cut along the dots" look */
+    padding: 20px;
+    background-color: #fff;
+    margin: 20px 0;
+    position: relative;
+}
+
+.coupon-title {
+    font-weight: bold;
+    letter-spacing: 2px;
+    color: #d32f2f; /* A classic "Discount Red" */
+    margin-bottom: 5px;
+}
