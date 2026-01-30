@@ -52,10 +52,9 @@ function displayData(data) {
     if (!grid) return;
     grid.innerHTML = '';
 
-    data.forEach(biz => {
-        // Normalize Tier and Name
+    data.forEach((biz, index) => { // Added 'index' here
         const tier = (biz.tier || biz.Tier || 'basic').toLowerCase().trim();
-        const bizName = (biz.name || biz.Name || "Unnamed Business").trim();
+        const bizName = biz.name || biz.Name || "Unnamed Business";
         const town = (biz.town || biz.Town || "Clay County").trim();
         const townClass = town.toLowerCase().replace(/\s+/g, '-');
 
@@ -66,49 +65,35 @@ function displayData(data) {
         card.className = `card ${tier}`;
 
         card.innerHTML = `
-            <div class="logo-box">${getSmartImage(biz.imageid || biz.ImageID)}</div>
-            <h3>${bizName}</h3>
-            <div class="town-bar ${townClass}-bar">${town}</div>
-            ${phoneHtml} 
-            <p class="category-tag"><i>${biz.category || biz.Category || ""}</i></p>
-            ${tier === 'premium' ? `<button class="read-more-btn" onclick="openPremiumModal('${encodeURIComponent(bizName)}')">Read More</button>` : ''}
-        `;
-        grid.appendChild(card);
-    });
+        <div class="logo-box">${getSmartImage(biz.imageid || biz.ImageID)}</div>
+        <h3>${bizName}</h3>
+        <div class="town-bar ${townClass}-bar">${town}</div>
+        ${phoneHtml} 
+        <p class="category-tag"><i>${biz.category || biz.Category || ""}</i></p>
+        ${tier === 'premium' ? `<button class="read-more-btn" onclick="openPremiumModal(${index})">Read More</button>` : ''}
+    `;
+    grid.appendChild(card);
+});
 }
 
 
 // 4. THE PREMIUM POP-OUT (Town Bar & Website Link Fix)
-function openPremiumModal(encodedName) {
-    // 1. Clean the incoming name from the button
-    const nameToFind = decodeURIComponent(encodedName).toLowerCase().replace(/\s+/g, '').trim();
-    
-    console.log("Searching for:", nameToFind); // This helps us see what the code is thinking
-
-    // 2. Search the masterData with the same 'cleaning' rules
-    const biz = masterData.find(b => {
-        const currentName = (b.name || b.Name || "").toLowerCase().replace(/\s+/g, '').trim();
-        return currentName === nameToFind;
-    });
+function openPremiumModal(index) {
+    // Grab the business data using the number sent by the button
+    const biz = masterData[index];
     
     if (!biz) {
-        console.error("No match found for:", nameToFind);
-        // Alert only during testing so you can see if it fails
-        alert("Could not find data for: " + nameToFind); 
+        console.error("No data found for index:", index);
         return;
     }
 
     const modal = document.getElementById('premium-modal');
     const modalContainer = document.querySelector('#premium-modal .modal-content');
-       
+    
     if (modalContainer) {
-        // --- WEBSITE PROTOCOL FIX ---
+        // Website Protocol Fix (Adds https:// if missing)
         let rawWeb = (biz.website || biz.Website || "").trim();
-        let websiteUrl = "";
-        if (rawWeb) {
-            // If it doesn't start with http, add it so the link actually works
-            websiteUrl = rawWeb.startsWith('http') ? rawWeb : `https://${rawWeb}`;
-        }
+        let websiteUrl = (rawWeb && !rawWeb.startsWith('http')) ? `https://${rawWeb}` : rawWeb;
         
         const address = biz.address || biz.Address || "Contact for Address";
         const town = (biz.town || biz.Town || "Clay County").trim();
