@@ -110,53 +110,52 @@ function openPremiumModal(encodedName) {
     if (modalContainer) {
         const mapAddress = encodeURIComponent(`${biz.address}, ${biz.town}, IL`);
 
+        // Update the content inside the box
         modalContainer.innerHTML = `
-            <span onclick="closePremiumModal()" style="position:absolute; top:10px; right:20px; font-size:40px; cursor:pointer; color:#222; font-weight:bold; z-index:100;">&times;</span>
+            <span onclick="closePremiumModal()" 
+                  style="position:absolute; top:15px; right:20px; font-size:40px; cursor:pointer; color:#222; font-weight:bold; z-index:100001; line-height:1;">&times;</span>
             
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-bottom: 20px;">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-bottom: 25px; padding-top: 10px;">
+                
                 <div style="text-align: center; display: flex; flex-direction: column; justify-content: center; align-items: center;">
-                    <div style="height: 120px; width: 100%; display: flex; align-items: center; justify-content: center; margin-bottom: 10px;">
+                    <div style="height: 100px; width: 100%; display: flex; align-items: center; justify-content: center; margin-bottom: 12px;">
                         ${getSmartImage(biz.imageid).replace('<img', '<img style="max-height:100%; max-width:100%;"')}
                     </div>
-                    <h2 style="font-family:serif; font-size: 1.8rem; margin: 0; color: #222;">${biz.name}</h2>
+                    <h2 style="font-family:serif; font-size: 1.4rem; margin: 0; color: #222; line-height: 1.2;">${biz.name}</h2>
                 </div>
 
                 <div style="border-left: 1px solid #ccc; padding-left: 20px; text-align: left; font-size: 0.95rem; color: #444;">
-                    <p style="margin: 5px 0;"><strong>📂 Category:</strong> ${biz.category}</p>
-                    <p style="margin: 5px 0;"><strong>📍 Address:</strong> ${biz.address || 'N/A'}</p>
-                    <p style="margin: 5px 0;"><strong>📞 Phone:</strong> ${biz.phone || 'N/A'}</p>
-                    <p style="margin: 5px 0;"><strong>🌐 Website:</strong> <a href="${biz.website || '#'}" target="_blank" style="color: #0044cc;">Visit Site</a></p>
+                    <p style="margin: 12px 0;"><strong>📂 Category:</strong><br>${biz.category}</p>
+                    <p style="margin: 12px 0;"><strong>📍 Address:</strong><br>${biz.address || 'N/A'}</p>
+                    <p style="margin: 12px 0;"><strong>📞 Phone:</strong><br>${biz.phone || 'N/A'}</p>
+                    <p style="margin: 12px 0;"><strong>🌐 Website:</strong><br><a href="${biz.website || '#'}" target="_blank" style="color: #0044cc; text-decoration: underline;">Visit Website</a></p>
                 </div>
             </div>
 
-            <hr style="border: 0; border-top: 2px solid #222; margin: 20px 0;">
+            <hr style="border: 0; border-top: 2px solid #222; margin: 15px 0;">
 
-            <div style="display: grid; grid-template-columns: 1.5fr 1fr; gap: 20px; margin-bottom: 25px;">
-                <div style="height: 200px; border: 1px solid #222;">
+            <div style="display: grid; grid-template-columns: 1.4fr 1fr; gap: 20px; margin-bottom: 25px;">
+                <div style="height: 180px; border: 1px solid #222;">
                     <iframe width="100%" height="100%" frameborder="0" style="border:0" 
                         src="https://www.google.com/maps/embed/v1/place?key=YOUR_API_KEY&q=${mapAddress}" allowfullscreen>
                     </iframe>
                 </div>
 
-                <div style="background: #fff; border: 1px solid #222; padding: 15px; font-size: 0.9rem;">
-                    <h4 style="margin-top: 0; border-bottom: 1px solid #ccc; padding-bottom: 5px;">HOURS OF OPERATION</h4>
+                <div style="background: #fff; border: 1px solid #222; padding: 15px; font-size: 0.85rem;">
+                    <h4 style="margin-top: 0; border-bottom: 1px solid #ccc; padding-bottom: 5px; font-size: 0.9rem;">HOURS OF OPERATION</h4>
                     <div style="line-height: 1.6; color: #333;">
                         ${biz.hours || "Mon-Fri: 8am - 5pm<br>Sat-Sun: Closed"}
                     </div>
                 </div>
             </div>
 
-            <div style="border: 3px dashed #cc0000; background: #fff; padding: 20px; text-align: center;">
-                <p style="color: #cc0000; font-weight: bold; font-size: 1.2rem; margin: 0;">DIGITAL COMMUNITY COUPON</p>
-                <p style="color: #222; margin: 5px 0 0 0;">Show this screen to the merchant to redeem your local discount!</p>
+            <div style="border: 3px dashed #cc0000; background: #fff; padding: 25px; text-align: center; margin-top: 10px;">
+                <p style="color: #cc0000; font-weight: bold; font-size: 1.2rem; margin: 0; letter-spacing: 1px;">DIGITAL COMMUNITY COUPON</p>
+                <p style="color: #222; margin: 8px 0 0 0; font-size: 0.95rem;">Show this screen to the merchant to redeem!</p>
             </div>
-
-            <a href="tel:${(biz.phone || "").replace(/\D/g,'')}" 
-               style="display:block; background: linear-gradient(45deg, #bf953f, #fcf6ba, #aa771c); color:#222 !important; text-align:center; padding:18px; margin-top:20px; text-decoration:none; font-weight:900; border:1px solid #222; text-transform:uppercase; letter-spacing:2px; box-shadow: 2px 2px 5px rgba(0,0,0,0.2);">
-               CALL BUSINESS NOW
-            </a>
         `;
         
+        // Final spacing and reveal
         document.getElementById('premium-modal').style.display = 'flex';
     }
 }
