@@ -120,33 +120,36 @@ body {
 .logo-box img { max-width: 100%; max-height: 100%; }
 
 /* --- 4. THE READ MORE BUTTON (Black & Gold) --- */
-/* --- THE RESTORED PREMIUM BUTTON --- */
 /* --- THE METALLIC GOLD BUTTON --- */
 .read-more-btn {
-    /* Metallic Gradient: Darker Gold to Lighter Gold */
+    /* Metallic Gradient */
     background: linear-gradient(45deg, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c) !important;
-    color: #222 !important;              /* Dark Ink Text for contrast */
-    border: 1px solid #222 !important;   /* Thin black border to make it pop */
     
-    padding: 14px 24px !important;
+    /* Colors & Border */
+    color: #222 !important;               /* Dark Ink text for clarity */
+    border: 1px solid #222 !important;    /* Thin black border to define the shape */
+    
+    /* Compact Sizing */
+    padding: 10px 19px !important;        /* Smaller: 10px top/bottom, 19px sides */
+    width: auto;                          /* Takes up less space */
+    display: inline-block;                /* Centers it and allows width to shrink */
+    
+    /* Typography & Style */
     font-family: 'Playfair Display', serif;
-    font-weight: 900 !important;         /* Heavy weight for a "stamp" look */
-    font-size: 14px !important;
-    letter-spacing: 2px !important;
+    font-weight: 900 !important;
+    font-size: 13px !important;           /* Slightly smaller font to match */
+    letter-spacing: 1.5px !important;
     text-transform: uppercase;
     
-    display: block;
-    width: 100%;
-    margin-top: 20px;
+    margin-top: 15px;
     cursor: pointer;
-    box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
+    box-shadow: 2px 2px 4px rgba(0,0,0,0.2);
     transition: all 0.3s ease;
 }
 
 .read-more-btn:hover {
-    filter: brightness(1.1);             /* Makes the "metal" shine brighter */
-    transform: translateY(-2px);         /* Lift effect */
-    box-shadow: 4px 4px 10px rgba(0,0,0,0.3);
+    filter: brightness(1.1);              /* Adds a "sheen" on hover */
+    box-shadow: 4px 4px 8px rgba(0,0,0,0.3);
 }
 
 /* --- 5. TOWN BARS --- */
