@@ -225,3 +225,24 @@ function populateTownFilter(data) {
         select.appendChild(opt);
     });
 }
+
+
+// QUICK-FILTER BY TIER
+function filterByTier(tier) {
+    // 1. Highlight the active button
+    document.querySelectorAll('.tier-btn').forEach(btn => btn.classList.remove('active'));
+    event.target.classList.add('active');
+
+    // 2. Filter the data
+    if (tier === 'all') {
+        displayData(masterData);
+        updateListingCount(masterData.length);
+    } else {
+        const filtered = masterData.filter(biz => {
+            const bTier = (biz.tier || biz.Tier || "").toLowerCase().trim();
+            return bTier === tier;
+        });
+        displayData(filtered);
+        updateListingCount(filtered.length);
+    }
+}
