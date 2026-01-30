@@ -1,44 +1,37 @@
-/* --- GLOBAL STYLES --- */
+/* --- 1. GLOBAL & LAYOUT --- */
 :root {
-    --paper-bg: #fffdf5;
-    --smlc-blue: #222222;
+    --paper-bg: #fcf6de; /* Using your preferred listings color */
+    --news-gray: #e5e5e5;
+    --ink-black: #222222;
+    --gold-premium: #d4af37;
 }
 
 body {
-    background-color: #e5e5e5;
+    background-color: var(--news-gray);
     font-family: 'Times New Roman', Times, serif;
     margin: 0;
     padding: 0;
 }
 
 .site-wrapper {
-    max-width: 1200px;      /* This stops the listings from spreading too far */
-    margin: 0 auto;         /* This centers the whole block on the screen */
-    padding: 0 40px;        /* This adds 'breathing room' so they don't touch the edges on mobile */
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px 40px 20px;
 }
 
-/* Ensure the grid itself stays within the wrapper */
-#directory-grid {
-    width: 100%;
-    margin-top: 20px;
-}
-
-
-
-/* --- NAVIGATION --- */
+/* --- 2. HEADER & NAVIGATION --- */
 .nav-header {
-    display: block !important;
-    background-color: #e5e5e5 !important;
+    background-color: var(--news-gray) !important;
     padding: 15px 0;
     text-align: center;
-    border-bottom: 2px solid #222222;
+    border-bottom: 2px solid var(--ink-black);
     width: 100%;
     position: relative;
     z-index: 999;
 }
 
 .nav-header a {
-    color: #222222 !important;
+    color: var(--ink-black) !important;
     text-decoration: none;
     font-weight: bold;
     margin: 0 15px;
@@ -47,7 +40,6 @@ body {
     font-size: 14px;
 }
 
-/* --- NEWSPAPER HEADER & META --- */
 .main-title h1 {
     text-align: center;
     font-family: 'Times New Roman', serif;
@@ -55,18 +47,16 @@ body {
     margin: 20px 0 5px 0;
     text-transform: uppercase;
     letter-spacing: -2px;
-    color: #222222;
+    color: var(--ink-black);
 }
 
 .newspaper-meta {
-   width: 100%;             /* Stretches to both edges of the screen */
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-top: 3px solid #222222;    /* Single solid line on top */
-    border-bottom: 3px solid #222222; /* Single solid line on bottom */
-    padding: 15px 0;                  /* Space between the lines */
-    background-color: #e5e5e5;        /* Your light gray background */
+    border-top: 3px solid var(--ink-black);
+    border-bottom: 3px solid var(--ink-black);
+    padding: 15px 0;
     margin-bottom: 40px;
 }
 
@@ -77,398 +67,160 @@ body {
     font-size: 0.85rem;
     text-transform: uppercase;
     font-family: Arial, sans-serif;
-    padding: 0 20px; 
-    color: #222222;
+    color: var(--ink-black);
 }
 
+.center-header { flex: 1.5; }
 .left-meta { text-align: left; }
 .right-meta { text-align: right; }
-.center-header { text-align: center; flex: 1.5; }
 
-.directory-pages {
-    /* border: 2px solid #222222;  Fixed the extra '2' here */
-    padding: 4px 15px;
-    font-size: 1.1rem;
-    display: inline-block;
-}
-
-/* -- Count pages text--"/
 .count-text {
-    font-family: Times New Roman, sans-serif;
+    font-family: 'Times New Roman', serif;
     font-size: 0.75rem;
-    color: #222222;
-    margin-top: 5px;
     font-style: italic;
-    text-transform: none; /* Keeps it from being all caps */
-    letter-spacing: 0.5px;
+    margin-top: 5px;
+    text-transform: none;
 }
 
-/* --- DIRECTORY GRID --- */
-.site-wrapper {
-    padding: 0 20px 40px 20px;
-    max-width: 1200px;
-    margin: 0 auto;
-}
-
+/* --- 3. DIRECTORY GRID & CARDS --- */
 #directory-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
     gap: 20px;
 }
 
-/* --- CARD STYLING --- */
 .card {
-    background: #fcf6de;
-    border: 2px solid #222222;
+    background: var(--paper-bg);
+    border: 2px solid var(--ink-black);
     padding: 15px;
     text-align: center;
-    cursor: pointer;
-    transition: transform 0.2s;
+    transition: transform 0.2s, box-shadow 0.2s;
     box-shadow: 5px 5px 0px rgba(0,0,0,0.1);
-}
-
-.card:hover { transform: translateY(-5px); }
-
-.logo-box {
-    height: 120px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 10px;
-}
-
-.logo-box img { max-width: 100%; max-height: 100%; }
-
-/* --- THE HIGH-POWER TOWN COLOR ENGINE --- */
-
-/* This base rule handles the shape and text */
-.town-bar {
-    padding: 8px;
-    margin: 10px -15px;
-    font-weight: bold;
-    text-transform: uppercase;
-    font-size: 0.9rem;
-    text-align: center;
-    border-top: 1px solid #000;
-    border-bottom: 1px solid #000;
-}
-
-/* These specific rules handle the community colors */
-.town-bar.flora-bar {
-    background-color: #ff6600 !important;
-    color: #ffffff !important;
-}
-
-.town-bar.louisville-bar {
-    background-color: #cc0000 !important;
-    color: #ffffff !important;
-}
-
-.town-bar.clay-city-bar {
-    background-color: #0044cc !important;
-    color: #ffffff !important;
-}
-
-.town-bar.xenia-bar, 
-.town-bar.sailor-springs-bar {
-    background-color: #000000 !important;
-    color: #ffffff !important;
-}
-
-/* Weather*/
-.weather-text {
-    color: #222222;
-    font-weight: bold;
-    font-family: Arial, sans-serif;
-    font-size: 14px;
-    margin-left: 20px;
-}
-
-/* Hide weather on mobile so the menu stays clean */
-@media (max-width: 768px) {
-    .weather-text {
-        display: none;
-    }
-}
-
-/* --- MOBILE RESPONSIVENESS (Screens smaller than 768px) --- */
-@media (max-width: 768px) {
-    
-    .nav-header {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        padding: 10px;
-    }
-    
-    .nav-header a {
-        margin: 5px 10px;
-        font-size: 0.8rem;
-    }
-
-    .main-title h1 {
-        font-size: 2.5rem;
-        margin-top: 15px;
-    }
-
-    .newspaper-meta {
-        flex-direction: column;
-        margin: 10px;
-        padding: 15px 0;
-        gap: 15px;
-    }
-
-    .meta-item {
-        width: 100%;
-        text-align: center !important;
-        padding: 0;
-    }
-
-    .left-meta, .right-meta { text-align: center; }
-
-    select {
-        width: 90%;
-        max-width: 300px;
-        font-size: 1rem;
-        padding: 10px;
-    }
-
-    #directory-grid {
-        grid-template-columns: 1fr; /* This now ONLY applies to mobile */
-        padding: 0 10px;
-    }
-
-    .card {
-        margin-bottom: 10px;
-    }
-}
-
-
-/* Premium - Gold border and subtle "pop" */
-.card.premium {
-    border: 2px solid #d4af37;
-    box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
-    transform: scale(1.02);
-    background: #fff;
     position: relative;
     overflow: hidden;
 }
 
-/* Plus - Professional blue accent */
-.card.plus {
-    border: 1px solid #2a5a8a;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+.card:hover { 
+    transform: translateY(-5px); 
+    box-shadow: 8px 8px 0px rgba(0,0,0,0.15);
 }
 
-/* Basic - Clean and simple */
-.card.basic {
-    border: 1px solid #ddd;
-    filter: grayscale(20%);
-}
+/* Tiers */
+.card.premium { border-color: var(--gold-premium); box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3); }
+.card.plus { border-color: #2a5a8a; }
+.card.basic { border-color: #ddd; filter: grayscale(20%); }
 
-/* Hover effect for interactivity */
-.card:hover {
-    transform: translateY(-5px);
-    transition: 0.3s ease;
-}
-
-/* Premium Bage (the Ribbon) */
 .card.premium::after {
     content: "PREMIUM";
     position: absolute;
     top: 10px;
     right: -30px;
-    background: #d4af37;
+    background: var(--gold-premium);
     color: white;
     font-size: 10px;
     font-weight: bold;
     padding: 5px 35px;
     transform: rotate(45deg);
-    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
 }
 
-/* Read More Button*/
-.read-more-btn {
-    background-color: #222; /* Dark like newsprint */
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    font-family: 'Playfair Display', serif; /* Or your site's heading font */
+.logo-box { height: 120px; display: flex; align-items: center; justify-content: center; margin-bottom: 10px; }
+.logo-box img { max-width: 100%; max-height: 100%; }
+
+/* --- 4. THE TOWN BARS --- */
+.town-bar {
+    padding: 8px;
+    margin: 10px -15px;
     font-weight: bold;
     text-transform: uppercase;
-    cursor: pointer;
-    width: 100%;
-    margin-top: 10px;
-    transition: background 0.2s;
+    font-size: 0.8rem;
+    border-top: 1px solid #000;
+    border-bottom: 1px solid #000;
 }
 
-.read-more-btn:hover {
-    background-color: #d4af37; /* Turns gold on hover */
-}
+.flora-bar { background: #ff6600 !important; color: #fff !important; }
+.louisville-bar { background: #cc0000 !important; color: #fff !important; }
+.clay-city-bar { background: #0044cc !important; color: #fff !important; }
+.xenia-bar, .sailor-springs-bar { background: #000 !important; color: #fff !important; }
 
-
-/* Plus and Basic Tiers */
-.phone-number {
-    font-weight: bold;
-    color: #2a5a8a;
-    margin: 5px 0;
-}
-
-.category-tag {
-    font-size: 0.85rem;
-    color: #666;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    border-top: 1px solid #eee;
-    padding-top: 5px;
-    margin-top: 5px;
-}
-
-/* Premium Tier */
-/* Modal Background */
-/* 1. THE OVERLAY (The dark background) */
+/* --- 5. PREMIUM MODAL (POPOUT) --- */
 .modal-overlay {
-    display: none; /* Hidden by default */
+    display: none;
     position: fixed;
     top: 0; left: 0;
     width: 100%; height: 100%;
     background: rgba(0,0,0,0.85);
-    z-index: 1000;
+    z-index: 9999;
     justify-content: center;
     align-items: center;
     padding: 20px;
 }
 
-/* The "Paper" clipping */
-/* 2. THE PAPER CLIPPING (The actual box) */
 .modal-content {
-    background-color: #fcf6de; /* Your preference */
+    background-color: var(--paper-bg);
+    background-image: url('https://www.transparenttextures.com/patterns/paper-fibers.png');
     padding: 30px;
-    width: 100%;
+    width: 95%;
     max-width: 500px;
-    border: 3px solid #222;
+    border: 3px solid var(--ink-black);
     position: relative;
-    box-shadow: 10px 10px 0px rgba(0,0,0,0.3);
-    font-family: 'Georgia', serif; /* Gives it that newspaper feel */
+    box-shadow: 15px 15px 0px rgba(0,0,0,0.3);
+    font-family: 'Georgia', serif;
+    color: var(--ink-black);
 }
 
-/* 3. TEXT HIERARCHY */
 #modal-name {
     font-family: 'Playfair Display', serif;
     font-size: 2rem;
-    margin-top: 0;
-    margin-bottom: 10px;
-    border-bottom: 2px solid #222;
-    color: #222;
+    border-bottom: 2px solid var(--ink-black);
+    margin: 0 0 15px 0;
 }
 
-.modal-details p {
-    font-size: 1.1rem;
-    margin: 10px 0;
-    color: #333;
-}
-
-
-.newspaper-font { font-family: 'Playfair Display', serif; border-bottom: 2px solid #222; }
-
-/* 4. THE TOWN BAR (Inside Modal) */
-.modal-town-bar { 
+.modal-town-bar {
     display: inline-block;
     padding: 5px 15px;
-    background: #444; /* Fallback color */
     color: white !important;
     font-weight: bold;
     text-transform: uppercase;
     margin-bottom: 20px;
-    text-align: center; 
 }
 
+.news-divider { border: 0; border-top: 3px double var(--ink-black); margin: 15px 0; }
 
-/* 5. THE CALL BUTTON */
+.coupon-border {
+    border: 2px dashed #444;
+    padding: 20px;
+    background: #fff;
+    margin: 20px 0;
+    text-align: center;
+}
+
+.coupon-title { font-weight: bold; color: #d32f2f; letter-spacing: 2px; }
+
 .call-btn {
     display: block;
-    background: #222;
+    background: var(--ink-black);
     color: #fff !important;
     text-align: center;
     padding: 15px;
     text-decoration: none;
     font-weight: bold;
-    margin-top: 20px;
-    border-radius: 4px;
+    transition: 0.2s;
 }
 
-.call-btn:hover {
-    background: #d4af37; /* Gold hover */
-}
+.call-btn:hover { background: var(--gold-premium); }
 
-/* 6. THE CLOSE BUTTON (The X) */
 .close-modal {
     position: absolute;
-    top: 5px;
-    right: 15px;
+    top: 5px; right: 15px;
     font-size: 35px;
     cursor: pointer;
-    color: #222;
     font-weight: bold;
 }
 
-.close-modal:hover {
-    color: #d4af37; /* Gold hover to match your premium border */
-}
-
-/* This makes the background dark and centers your #fcf6de box */
-.modal-overlay {
-    display: none; /* Hidden by default */
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.8); /* Dark semi-transparent background */
-    z-index: 9999; /* Makes sure it stays on top of everything */
-    justify-content: center;
-    align-items: center;
-    overflow-y: auto; /* Allows scrolling if the content is long */
-}
-
-.modal-content {
-    background-color: #fcf6de; /* Your Cream Color */
-    padding: 30px;
-    width: 95%;
-    max-width: 500px;
-    border: 3px solid #222;
-    position: relative;
-    box-shadow: 10px 10px 0px rgba(0,0,0,0.3);
-}
-
-/* 1. The Cream Paper Background */
-.paper-texture {
-    background-color: #fcf6de; /* Your preferred color */
-    background-image: url('https://www.transparenttextures.com/patterns/paper-fibers.png'); /* Subtle paper feel */
-    border: 2px solid #222;
-    box-shadow: 15px 15px 0px rgba(0,0,0,0.1); /* The "offset" shadow look */
-}
-
-/* 2. The Newspaper Divider */
-.news-divider {
-    border: 0;
-    border-top: 3px double #222; /* Classic double-line look */
-    margin: 15px 0;
-}
-
-/* 3. The Digital Coupon Look */
-.coupon-border {
-    border: 2px dashed #444; /* The "cut along the dots" look */
-    padding: 20px;
-    background-color: #fff;
-    margin: 20px 0;
-    position: relative;
-    text-align: center;
-}
-
-.coupon-title {
-    font-weight: bold;
-    letter-spacing: 2px;
-    color: #d32f2f; /* A classic "Discount Red" */
-    margin-bottom: 5px;
+/* --- 6. MOBILE FIXES --- */
+@media (max-width: 768px) {
+    .newspaper-meta { flex-direction: column; gap: 10px; }
+    .meta-item { text-align: center !important; }
+    #directory-grid { grid-template-columns: 1fr; }
+    .weather-text { display: none; }
 }
