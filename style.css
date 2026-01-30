@@ -1,16 +1,20 @@
-/* --- 1. GLOBAL & LAYOUT --- */
+/* --- 1. GLOBAL & VARIABLES --- */
 :root {
     --paper-bg: #fcf6de;
     --news-gray: #e5e5e5;
     --ink-black: #222222;
     --gold-premium: #d4af37;
+    --plus-green: #2e7d32;
+    --shadow: rgba(0,0,0,0.1);
 }
+
+* { box-sizing: border-box; } /* Prevents padding from breaking widths */
 
 body {
     background-color: var(--news-gray);
     font-family: 'Times New Roman', Times, serif;
     margin: 0;
-    padding: 0;
+    line-height: 1.4;
 }
 
 .site-wrapper {
@@ -19,35 +23,29 @@ body {
     padding: 0 20px 40px 20px;
 }
 
-/* --- 2. HEADER & NAVIGATION --- */
+/* --- 2. NAVIGATION & MASTHEAD --- */
 .nav-header {
-    background-color: var(--news-gray) !important;
+    background-color: var(--news-gray);
     padding: 15px 0;
     text-align: center;
     border-bottom: 2px solid var(--ink-black);
-    width: 100%;
-    position: relative;
-    z-index: 999;
 }
 
 .nav-header a {
-    color: var(--ink-black) !important;
+    color: var(--ink-black);
     text-decoration: none;
     font-weight: bold;
     margin: 0 15px;
-    display: inline-block;
     font-family: Arial, sans-serif;
     font-size: 14px;
 }
 
 .main-title h1 {
     text-align: center;
-    font-family: 'Times New Roman', serif;
-    font-size: clamp(2rem, 8vw, 4.5rem);
-    margin: 20px 0 5px 0;
+    font-size: clamp(2.5rem, 8vw, 4.5rem);
+    margin: 20px 0 10px;
     text-transform: uppercase;
     letter-spacing: -2px;
-    color: var(--ink-black);
 }
 
 .newspaper-meta {
@@ -57,7 +55,7 @@ body {
     border-top: 3px solid var(--ink-black);
     border-bottom: 3px solid var(--ink-black);
     padding: 15px 0;
-    margin-bottom: 40px;
+    margin-bottom: 30px;
 }
 
 .meta-item {
@@ -67,140 +65,112 @@ body {
     font-size: 0.85rem;
     text-transform: uppercase;
     font-family: Arial, sans-serif;
-    color: var(--ink-black);
 }
 
 .center-header { flex: 1.5; }
-.left-meta { 
-    text-align: left; 
-    padding-left: 15px;
-}
-.right-meta { 
-    text-align: right;
-    padding-right: 15px;
+.left-meta { text-align: left; padding-left: 15px; }
+.right-meta { text-align: right; padding-right: 15px; }
+
+/* --- 3. TIER FILTER BUTTONS --- */
+.tier-filter-container {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
 }
 
-/* --- 3. DIRECTORY GRID & CARDS --- */
+.tier-btn {
+    padding: 10px 20px;
+    border: 2px solid var(--ink-black);
+    background: #fff;
+    cursor: pointer;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    transition: 0.2s;
+}
+
+.tier-btn:hover { background: var(--paper-bg); }
+.tier-btn.active { background: var(--ink-black); color: #fff; }
+
+.plus-btn { border-color: var(--plus-green); color: var(--plus-green); }
+.plus-btn.active { background: var(--plus-green); color: #fff; }
+
+.premium-btn { border-color: var(--gold-premium); color: #8a6d07; }
+.premium-btn.active { background: var(--gold-premium); color: #fff; }
+
+/* --- 4. GRID & CARDS --- */
 #directory-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 20px;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 25px;
 }
 
 .card {
     background: var(--paper-bg);
     border: 2px solid var(--ink-black);
-    padding: 15px;
+    padding: 20px;
     text-align: center;
-    transition: transform 0.2s, box-shadow 0.2s;
-    box-shadow: 5px 5px 0px rgba(0,0,0,0.1);
     position: relative;
     overflow: hidden;
+    box-shadow: 5px 5px 0px var(--shadow);
+    transition: transform 0.2s;
 }
 
-.card:hover { 
-    transform: translateY(-5px); 
-    box-shadow: 8px 8px 0px rgba(0,0,0,0.15);
-}
+.card:hover { transform: translateY(-5px); }
 
-/* --- PLUS TIER RIBBON --- */
-.card.plus {
-    border: 2px solid #2e7d32 !important; /* Professional Green border */
-    position: relative;
-    overflow: hidden; /* This is vital to keep the ribbon from "bleeding" out */
-}
-
-/* --- PLUS RIBBON (Centered) --- */
-.card.plus::after {
-    content: "PLUS MEMBER";
+/* Universal Ribbon Style */
+.card.plus::after, .card.premium::after {
     position: absolute;
-    top: 20px;      /* Lowered slightly */
-    right: -25px;   /* Pulled in from -35px */
-    background: #2e7d32;
-    color: white;
-    font-size: 9px;
-    font-weight: bold;
-    padding: 5px 40px;
+    top: 15px; right: -30px;
     transform: rotate(45deg);
-    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    padding: 5px 40px;
+    font-size: 10px;
+    font-weight: bold;
+    color: white;
     z-index: 10;
 }
 
+.card.plus { border-color: var(--plus-green); }
+.card.plus::after { content: "PLUS"; background: var(--plus-green); }
 
-/* Premium Tier */
-.card.premium { 
-    border: 3px solid var(--gold-premium) !important; /* Thicker Gold Border */
-    box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3); 
-}
+.card.premium { border-color: var(--gold-premium); border-width: 3px; }
+.card.premium::after { content: "PREMIUM"; background: var(--gold-premium); }
 
-/* --- PREMIUM RIBBON (Centered) --- */
-.card.premium::after {
-    content: "PREMIUM";
-    position: absolute;
-    top: 15px;      /* Lowered slightly for better centering */
-    right: -25px;   /* Pulled in from -30px to stop cutoff */
-    background: var(--gold-premium);
-    color: white;
-    font-size: 10px;
-    font-weight: bold;
-    padding: 5px 35px;
-    transform: rotate(45deg);
-    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-}
+.logo-box { height: 100px; display: flex; align-items: center; justify-content: center; margin-bottom: 15px; }
+.logo-box img { max-width: 100%; max-height: 100%; object-fit: contain; }
 
-.logo-box { height: 120px; display: flex; align-items: center; justify-content: center; margin-bottom: 10px; }
-.logo-box img { max-width: 100%; max-height: 100%; }
-
-/* --- 4. THE READ MORE BUTTON (Black & Gold) --- */
-/* --- THE METALLIC GOLD BUTTON --- */
+/* --- 5. BUTTONS & BARS --- */
 .read-more-btn {
-    /* Metallic Gradient */
-    background: linear-gradient(45deg, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c) !important;
-    
-    /* Colors & Border */
-    color: #222 !important;               /* Dark Ink text for clarity */
-    border: 1px solid #222 !important;    /* Thin black border to define the shape */
-    
-    /* Compact Sizing */
-    padding: 12px 27px !important;        /* Smaller: 10px top/bottom, 19px sides */
-    width: auto;                          /* Takes up less space */
-    display: inline-block;                /* Centers it and allows width to shrink */
-    
-    /* Typography & Style */
-    font-family: 'Playfair Display', serif;
-    font-weight: 900 !important;
-    font-size: 13px !important;           /* Slightly smaller font to match */
-    letter-spacing: 1.5px !important;
+    background: linear-gradient(45deg, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c);
+    color: #222;
+    border: 1px solid #222;
+    padding: 10px 20px;
+    font-weight: 900;
+    font-size: 12px;
+    letter-spacing: 1px;
     text-transform: uppercase;
-    
-    margin-top: 15px;
     cursor: pointer;
-    box-shadow: 2px 2px 4px rgba(0,0,0,0.2);
-    transition: all 0.3s ease;
+    margin-top: 15px;
 }
 
-.read-more-btn:hover {
-    filter: brightness(1.1);              /* Adds a "sheen" on hover */
-    box-shadow: 4px 4px 8px rgba(0,0,0,0.3);
-}
-
-/* --- 5. TOWN BARS --- */
 .town-bar {
     padding: 8px;
-    margin: 10px -15px;
+    margin: 15px -20px;
     font-weight: bold;
     text-transform: uppercase;
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     border-top: 1px solid #000;
     border-bottom: 1px solid #000;
 }
 
-.flora-bar { background: #ff6600 !important; color: #fff !important; }
-.louisville-bar { background: #cc0000 !important; color: #fff !important; }
-.clay-city-bar { background: #0044cc !important; color: #fff !important; }
-.xenia-bar, .sailor-springs-bar { background: #000 !important; color: #fff !important; }
+.flora-bar { background: #ff6600; color: #fff; }
+.louisville-bar { background: #cc0000; color: #fff; }
+.clay-city-bar { background: #0044cc; color: #fff; }
+.xenia-bar, .sailor-springs-bar { background: #000; color: #fff; }
 
-/* --- 6. PREMIUM MODAL SYSTEM --- */
+/* --- 6. MODAL SYSTEM --- */
 .modal-overlay {
     display: none;
     position: fixed;
@@ -214,28 +184,21 @@ body {
 }
 
 .modal-content {
-    background-color: #fcf6de;
-    padding: 40px;
+    background-color: var(--paper-bg);
     width: 90%;
-    max-width: 550px;
+    max-width: 600px;
+    max-height: 90vh;
     border: 3px solid #222;
     position: relative;
+    padding: 40px;
     box-shadow: 20px 20px 0px rgba(0,0,0,0.4);
-    align-items: center;
-    padding: 40px 0;
     overflow-y: auto;
 }
 
-.close-modal {
-    position: absolute;
-    top: 10px; right: 15px;
-    font-size: 40px;
-    cursor: pointer;
-    color: #222;
-}
-
-/* --- 7. MOBILE FIXES --- */
+/* --- 7. RESPONSIVENESS --- */
 @media (max-width: 768px) {
-    .newspaper-meta { flex-direction: column; gap: 10px; }
+    .newspaper-meta { flex-direction: column; gap: 15px; }
+    .site-wrapper { padding: 0 10px 30px; }
     #directory-grid { grid-template-columns: 1fr; }
+    .modal-content { padding: 30px 20px; }
 }
