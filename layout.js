@@ -91,6 +91,7 @@ function getSmartImage(id) {
 }
 
 // 5. THE DYNAMIC POP-OUT (Bypasses ID Errors)
+// 5. THE DYNAMIC POP-OUT (Metallic Gold Update)
 function openPremiumModal(encodedName) {
     const name = decodeURIComponent(encodedName);
     const biz = masterData.find(b => (b.name || b.Name) === name);
@@ -115,16 +116,17 @@ function openPremiumModal(encodedName) {
             </div>
             <div class="premium-coupon-box" style="border:2px dashed #cc0000; padding:15px; margin-top:20px; background:#fff; text-align:center;">
                 <span style="color:#cc0000; font-weight:bold;">COMMUNITY COUPON</span>
-                <p style="margin:5px 0 0 0; font-size:0.9rem;">Show this screen to the business for a special local offer!</p>
+                <p style="margin:5px 0 0 0; font-size:0.9rem; color:#222;">Show this screen to the business for a special local offer!</p>
             </div>
-            <a href="tel:${(biz.phone || "").replace(/\D/g,'')}" class="premium-call-btn" style="display:block; background:#222; color:#d4af37 !important; text-align:center; padding:15px; margin-top:20px; text-decoration:none; font-weight:bold; border:2px solid #d4af37;">CALL BUSINESS NOW</a>
+            
+            <a href="tel:${(biz.phone || "").replace(/\D/g,'')}" 
+               class="premium-call-btn" 
+               style="display:block; background: linear-gradient(45deg, #bf953f, #fcf6ba, #aa771c); color:#222 !important; text-align:center; padding:18px; margin-top:20px; text-decoration:none; font-weight:bold; border:2px solid #222; text-transform:uppercase; letter-spacing:1px;">
+               CALL BUSINESS NOW
+            </a>
         `;
         document.getElementById('premium-modal').style.display = 'flex';
     }
-}
-
-function closePremiumModal() {
-    document.getElementById('premium-modal').style.display = 'none';
 }
 
 // 6. FILTERS
