@@ -1,6 +1,6 @@
 /* --- 1. GLOBAL & LAYOUT --- */
 :root {
-    --paper-bg: #fcf6de; /* Using your preferred listings color */
+    --paper-bg: #fcf6de;
     --news-gray: #e5e5e5;
     --ink-black: #222222;
     --gold-premium: #d4af37;
@@ -74,14 +74,6 @@ body {
 .left-meta { text-align: left; }
 .right-meta { text-align: right; }
 
-.count-text {
-    font-family: 'Times New Roman', serif;
-    font-size: 0.75rem;
-    font-style: italic;
-    margin-top: 5px;
-    text-transform: none;
-}
-
 /* --- 3. DIRECTORY GRID & CARDS --- */
 #directory-grid {
     display: grid;
@@ -106,9 +98,10 @@ body {
 }
 
 /* Tiers */
-.card.premium { border-color: var(--gold-premium); box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3); }
-.card.plus { border-color: #2a5a8a; }
-.card.basic { border-color: #ddd; filter: grayscale(20%); }
+.card.premium { 
+    border: 3px solid var(--gold-premium) !important; /* Thicker Gold Border */
+    box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3); 
+}
 
 .card.premium::after {
     content: "PREMIUM";
@@ -126,7 +119,28 @@ body {
 .logo-box { height: 120px; display: flex; align-items: center; justify-content: center; margin-bottom: 10px; }
 .logo-box img { max-width: 100%; max-height: 100%; }
 
-/* --- 4. THE TOWN BARS --- */
+/* --- 4. THE READ MORE BUTTON (Black & Gold) --- */
+.read-more-btn {
+    background-color: #222 !important;     /* Solid Black Background */
+    color: var(--gold-premium) !important; /* Gold Letters */
+    border: 2px solid var(--gold-premium) !important; /* Gold Border */
+    padding: 12px 20px;                   /* Larger size */
+    font-family: 'Playfair Display', serif;
+    font-weight: bold;
+    text-transform: uppercase;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 15px;
+    font-size: 1rem;                      /* Larger text */
+    transition: all 0.3s ease;
+}
+
+.read-more-btn:hover {
+    background-color: var(--gold-premium) !important; /* Flips to Gold on hover */
+    color: #222 !important;                            /* Flips to Black text */
+}
+
+/* --- 5. TOWN BARS --- */
 .town-bar {
     padding: 8px;
     margin: 10px -15px;
@@ -142,10 +156,7 @@ body {
 .clay-city-bar { background: #0044cc !important; color: #fff !important; }
 .xenia-bar, .sailor-springs-bar { background: #000 !important; color: #fff !important; }
 
-/* --- 5. PREMIUM MODAL (POPOUT) --- */
-/* --- PREMIUM MODAL SYSTEM --- */
-
-/* The Darkened Background */
+/* --- 6. PREMIUM MODAL SYSTEM --- */
 .modal-overlay {
     display: none;
     position: fixed;
@@ -155,137 +166,29 @@ body {
     z-index: 99999;
     justify-content: center;
     align-items: center;
-    backdrop-filter: blur(5px); /* Blurs the background site slightly */
+    backdrop-filter: blur(5px);
 }
 
-/* The Paper Box */
 .modal-content {
-    background-color: #fcf6de; /* Your preferred cream color */
+    background-color: #fcf6de;
     padding: 40px;
     width: 90%;
     max-width: 550px;
     border: 3px solid #222;
     position: relative;
     box-shadow: 20px 20px 0px rgba(0,0,0,0.4);
-    animation: modalPop 0.3s ease-out;
 }
 
-@keyframes modalPop {
-    from { transform: scale(0.9); opacity: 0; }
-    to { transform: scale(1); opacity: 1; }
-}
-
-/* Close Button */
 .close-modal {
     position: absolute;
     top: 10px; right: 15px;
     font-size: 40px;
-    font-weight: bold;
     cursor: pointer;
     color: #222;
-    line-height: 1;
 }
 
-/* Logo Styling */
-.premium-logo-frame {
-    text-align: center;
-    margin-bottom: 20px;
-}
-.premium-logo-frame img {
-    max-height: 120px;
-    border: 1px solid #222;
-    padding: 10px;
-    background: #fff;
-}
-
-/* Typography */
-#modal-name {
-    font-family: 'Playfair Display', serif;
-    font-size: 2.2rem;
-    text-align: center;
-    margin: 0 0 10px 0;
-    color: #222;
-}
-
-.modal-town-label {
-    display: block;
-    margin: 0 auto;
-    width: fit-content;
-    padding: 4px 20px;
-    color: #fff;
-    font-weight: bold;
-    text-transform: uppercase;
-    font-size: 0.9rem;
-}
-
-.premium-divider {
-    border: 0;
-    border-top: 4px double #222;
-    margin: 20px 0;
-}
-
-/* Info Grid */
-.premium-info-grid {
-    display: grid;
-    gap: 15px;
-    margin-bottom: 25px;
-}
-
-.info-item {
-    display: flex;
-    flex-direction: column;
-}
-
-.info-label {
-    font-size: 0.7rem;
-    font-weight: bold;
-    color: #666;
-    letter-spacing: 1px;
-}
-
-.info-value {
-    font-size: 1.1rem;
-    color: #222;
-    font-weight: 500;
-}
-
-/* Coupon Box */
-.premium-coupon-box {
-    border: 2px dashed #222;
-    padding: 15px;
-    background: #fff;
-    margin-bottom: 20px;
-}
-
-.coupon-tag {
-    font-weight: bold;
-    color: #cc0000;
-    font-size: 0.8rem;
-    display: block;
-    margin-bottom: 5px;
-}
-
-/* Call Button */
-.premium-call-btn {
-    display: block;
-    background: #222;
-    color: #fff !important;
-    text-align: center;
-    padding: 18px;
-    text-decoration: none;
-    font-weight: bold;
-    font-size: 1.1rem;
-    transition: 0.3s;
-}
-
-.premium-call-btn:hover {
-    background: #d4af37;
-}
-
-/* --- 6. MOBILE FIXES --- */
+/* --- 7. MOBILE FIXES --- */
 @media (max-width: 768px) {
     .newspaper-meta { flex-direction: column; gap: 10px; }
-    .meta-item { text-align: center !important; }
     #directory-grid { grid-template-columns: 1fr; }
-    .weather-text { display: none; }
 }
