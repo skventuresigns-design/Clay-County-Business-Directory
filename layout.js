@@ -47,6 +47,35 @@ function initDirectory() {
 
 
 // 3. RENDER LISTINGS (Simplified for better Premium matching)
+function displayData(data) {
+    const grid = document.getElementById('directory-grid');
+    if (!grid) return;
+    grid.innerHTML = '';
+
+    data.forEach(biz => {
+        const tier = (biz.tier || biz.Tier || 'basic').toLowerCase().trim();
+        const bizName = (biz.name || biz.Name || "Unnamed Business").trim();
+        const town = (biz.town || biz.Town || "Clay County").trim();
+        const townClass = town.toLowerCase().replace(/\s+/g, '-');
+        const cleanID = bizName.replace(/[^a-zA-Z0-9]/g, '');
+
+        const card = document.createElement('div');
+        card.className = `card ${tier}`;
+
+        card.innerHTML = `
+            <div class="logo-box">${getSmartImage(biz.imageid || biz.ImageID)}</div>
+            <h3>${bizName}</h3>
+            <div class="town-bar ${townClass}-bar">${town}</div>
+            ${tier !== 'basic' ? `<p class="phone">${biz.phone || biz.Phone || ""}</p>` : ''} 
+            <p class="category-tag"><i>${biz.category || biz.Category || ""}</i></p>
+            ${tier === 'premium' ? `<button class="read-more-btn" onclick="openPremiumModal('${cleanID}')">Read More</button>` : ''}
+        `;
+        grid.appendChild(card);
+    });
+}
+
+
+// 4. THE PREMIUM POP-OUT (Town Bar & Website Link Fix)
 function openPremiumModal(cleanID) {
     const biz = masterData.find(b => {
         const checkName = (b.name || b.Name || "").replace(/[^a-zA-Z0-9]/g, '');
@@ -59,14 +88,12 @@ function openPremiumModal(cleanID) {
     const modalContainer = document.querySelector('#premium-modal .modal-content');
     
     if (modalContainer) {
-        // --- DATA NORMALIZATION ---
         const town = (biz.town || biz.Town || "Clay County").trim();
         const townClass = town.toLowerCase().replace(/\s+/g, '-');
         const address = biz.address || biz.Address || "Contact for Address";
         const phone = biz.phone || biz.Phone || "N/A";
-        const bizHours = biz.hours || biz.Hours || "Mon-Fri: 8am - 5pm<br>Sat-Sun: Closed";
+        const bizHours = biz.hours || biz.Hours || "Mon-Fri: 8am - 5pm";
         
-        // Link Logic
         let rawWeb = (biz.website || biz.Website || "").trim();
         let websiteUrl = (rawWeb && !rawWeb.startsWith('http')) ? `https://${rawWeb}` : rawWeb;
         let rawFB = (biz.facebook || biz.Facebook || "").trim();
@@ -82,27 +109,25 @@ function openPremiumModal(cleanID) {
                     <div style="height: 100px; margin-bottom: 12px; display:flex; align-items:center; justify-content:center;">
                         ${getSmartImage(biz.imageid || biz.ImageID).replace('<img', '<img style="max-height:100%; max-width:100%;"')}
                     </div>
-                    <h2 style="font-family:serif; font-size: 1.4rem; margin: 0; color:#111;">${biz.name || biz.Name}</h2>
+                    <h2 style="font-family:serif; font-size: 1.4rem; margin: 0;">${biz.name || biz.Name}</h2>
                     <p style="color: #666; font-style: italic; margin-top: 5px; font-size: 0.9rem;">${biz.category || biz.Category || ""}</p>
                 </div>
 
                 <div style="border-left: 1px solid #ccc; padding-left: 20px; text-align: left; font-size: 0.95rem;">
                     <p style="margin: 10px 0;"><strong>📍 Address:</strong><br>${address}</p>
                     <p style="margin: 10px 0;"><strong>📞 Phone:</strong><br>${phone}</p>
-                    
-                    ${websiteUrl ? `<p style="margin: 10px 0;"><strong>🌐 Website:</strong><br><a href="${websiteUrl}" target="_blank" style="color:#0044cc; text-decoration:underline;">Visit Website</a></p>` : ''}
-                    
-                    ${fbUrl ? `<p style="margin: 10px 0;"><strong>📘 Facebook:</strong><br><a href="${fbUrl}" target="_blank" style="color:#1877F2; text-decoration:underline;">Follow us on Facebook</a></p>` : ''}
+                    ${websiteUrl ? `<p style="margin: 10px 0;"><strong>🌐 Website:</strong><br><a href="${websiteUrl}" target="_blank" style="color:#0044cc;">Visit Website</a></p>` : ''}
+                    ${fbUrl ? `<p style="margin: 10px 0;"><strong>📘 Facebook:</strong><br><a href="${fbUrl}" target="_blank" style="color:#1877F2;">Facebook Page</a></p>` : ''}
                 </div>
             </div>
 
             <div style="position: relative; margin: 20px -40px; text-align: center;">
-                <div style="background: #d4af37; color: #fff; padding: 5px 0; font-weight: bold; text-transform: uppercase; letter-spacing: 3px; font-size: 0.8rem; box-shadow: 0 2px 4px rgba(0,0,0,0.2);">
+                <div style="background: #d4af37; color: #fff; padding: 5px 0; font-weight: bold; text-transform: uppercase; letter-spacing: 3px; font-size: 0.8rem;">
                     PREMIUM COMMUNITY PARTNER
                 </div>
             </div>
 
-            <div class="town-bar ${townClass}-bar" style="margin: 0 -40px 20px -40px; border-radius: 0; width: calc(100% + 80px); text-align: center; padding: 10px 0; font-weight: bold; text-transform: uppercase; letter-spacing: 2px;">
+            <div class="town-bar ${townClass}-bar" style="margin: 0 -40px 20px -40px; width: calc(100% + 80px); text-align: center; padding: 10px 0; font-weight: bold; text-transform: uppercase;">
                 ${town}
             </div>
             
@@ -111,77 +136,20 @@ function openPremiumModal(cleanID) {
                     <iframe width="100%" height="100%" frameborder="0" src="https://maps.google.com/maps?q=${mapAddress}&output=embed"></iframe>
                 </div>
                 <div style="background:#fff; border: 1px solid #222; padding: 15px; font-size: 0.85rem;">
-                    <h4 style="margin:0 0 10px 0; border-bottom: 1px solid #ccc; padding-bottom: 5px;">HOURS OF OPERATION</h4>
-                    <div style="line-height:1.4;">${bizHours}</div>
+                    <h4 style="margin:0 0 10px 0; border-bottom: 1px solid #ccc;">HOURS</h4>
+                    ${bizHours}
                 </div>
             </div>
 
-            <div style="border: 3px dashed #cc0000; background: #fff; padding: 25px; text-align: center; position:relative;">
+            <div style="border: 3px dashed #cc0000; padding: 20px; text-align: center; position:relative;">
                 <span style="position:absolute; top:-15px; left:10px; font-size:20px;">✂️</span>
-                <p style="color:#cc0000; font-weight:bold; font-size:1.2rem; margin:0; letter-spacing:1px;">DIGITAL COMMUNITY COUPON</p>
-                <p style="margin:8px 0 0 0; font-size:0.95rem; color:#222;">Show this screen to the merchant to redeem!</p>
+                <p style="color:#cc0000; font-weight:bold; margin:0;">DIGITAL COMMUNITY COUPON</p>
+                <p style="margin:5px 0 0 0; font-size:0.9rem;">Show this screen to redeem!</p>
             </div>
         `;
         modal.style.display = 'flex';
     }
 }
-
-// 4. THE PREMIUM POP-OUT (Town Bar & Website Link Fix)
-function openPremiumModal(cleanID) {
-    // Search masterData for a match by stripping symbols from the names in our list
-    const biz = masterData.find(b => {
-        const checkName = (b.name || b.Name || "").replace(/[^a-zA-Z0-9]/g, '');
-        return checkName === cleanID;
-    });
-    
-    if (!biz) return;
-
-    const modal = document.getElementById('premium-modal');
-    const modalContainer = document.querySelector('#premium-modal .modal-content');
-    
-    if (modalContainer) {
-        const town = (biz.town || biz.Town || "Clay County").trim();
-        const townClass = town.toLowerCase().replace(/\s+/g, '-');
-        const address = biz.address || biz.Address || "";
-        const mapAddress = encodeURIComponent(`${address}, ${town}, IL`);
-
-        modalContainer.innerHTML = `
-            <span onclick="closePremiumModal()" style="position:absolute; top:15px; right:20px; font-size:45px; cursor:pointer; color:#222; font-weight:bold; z-index:999999; line-height:0.8;">×</span>
-            
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-bottom: 10px;">
-                <div style="text-align: center;">
-                    <div style="height: 100px; margin-bottom: 12px; display:flex; align-items:center; justify-content:center;">
-                        ${getSmartImage(biz.imageid || biz.ImageID).replace('<img', '<img style="max-height:100%; max-width:100%;"')}
-                    </div>
-                    <h2 style="font-family:serif; font-size: 1.4rem; margin: 0;">${biz.name || biz.Name}</h2>
-                    <p style="color: #666; font-style: italic; margin-top: 5px; font-size: 0.9rem;">${biz.category || biz.Category}</p>
-                </div>
-
-                <div style="border-left: 1px solid #ccc; padding-left: 20px; text-align: left; font-size: 0.95rem;">
-                    <p style="margin: 15px 0;"><strong>📍 Address:</strong><br>${address}</p>
-                    <p style="margin: 15px 0;"><strong>📞 Phone:</strong><br>${biz.phone || biz.Phone}</p>
-                    <p style="margin: 15px 0;"><strong>🌐 Website:</strong><br><a href="${biz.website || '#'}" target="_blank" style="color:#0044cc;">Visit Website</a></p>
-                </div>
-            </div>
-
-            <div class="town-bar ${townClass}-bar" style="margin: 15px -40px; border-radius: 0; width: calc(100% + 80px); text-align: center; padding: 10px 0; font-weight: bold; text-transform: uppercase; letter-spacing: 2px;">
-                ${town}
-            </div>
-            
-            <div style="display: grid; grid-template-columns: 1.4fr 1fr; gap: 20px; margin-top: 20px;">
-                <div style="height: 180px; border: 1px solid #222;">
-                    <iframe width="100%" height="100%" frameborder="0" src="https://maps.google.com/maps?q=${mapAddress}&output=embed"></iframe>
-                </div>
-                <div style="background:#fff; border: 1px solid #222; padding: 15px; font-size: 0.85rem;">
-                    <h4 style="margin:0 0 10px 0; border-bottom:1px solid #ccc;">HOURS</h4>
-                    ${biz.hours || "Contact for hours"}
-                </div>
-            </div>
-        `;
-        modal.style.display = 'flex';
-    }
-}
-
 
 // 5. GLOBAL HELPERS
 function closePremiumModal() {
