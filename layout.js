@@ -145,10 +145,11 @@ function openPremiumModal(safeName) {
                 </div>
             </div>
 
-            <div style="border: 3px dashed #cc0000; background: #fff; padding: 25px; text-align: center; position:relative;">
+            <div style="border: 3px dashed #cc0000; background: #fff; padding: 25px; text-align: center; position:relative; margin-top:10px;">
                 <span style="position:absolute; top:-15px; left:10px; font-size:20px;">✂️</span>
-                <p style="color:#cc0000; font-weight:bold; font-size:1.2rem; margin:0;">DIGITAL COMMUNITY COUPON</p>
-                <p style="margin:8px 0 0 0; font-size:0.95rem;">Show this screen to the merchant to redeem!</p>
+                <p style="color:#cc0000; font-weight:bold; font-size:1.2rem; margin:0; letter-spacing:1px;">DIGITAL COMMUNITY COUPON</p>
+                <p style="margin:8px 0 0 0; font-size:0.95rem; color:#222;">Show this screen to ${bizName} to redeem!</p>
+                <p style="font-size:0.75rem; color:#777; margin-top:10px; font-style:italic;">One coupon per customer. Not valid with other offers.</p>
             </div>
         `;
         modal.style.display = 'flex';
