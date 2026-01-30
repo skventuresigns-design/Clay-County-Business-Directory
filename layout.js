@@ -103,36 +103,43 @@ function getSmartImage(id) {
 function openPremiumModal(encodedName) {
     const name = decodeURIComponent(encodedName);
     const biz = masterData.find(b => (b.name || b.Name) === name);
-
-    if (!biz) {
-        console.error("Business not found:", name);
-        return;
-    }
+    if (!biz) return;
 
     const modalContainer = document.querySelector('#premium-modal .modal-content');
     
     if (modalContainer) {
+        // Logic: Use a big photo if available, fallback to logo
+        const heroImg = biz.popupimage && biz.popupimage !== "" ? getSmartImage(biz.popupimage) : getSmartImage(biz.imageid);
+        const mapAddress = encodeURIComponent(`${biz.address}, ${biz.town}, IL`);
+
         modalContainer.innerHTML = `
-            <span onclick="closePremiumModal()" style="position:absolute; top:5px; right:15px; font-size:50px; cursor:pointer; color:#222; font-weight:bold; line-height:1; z-index:100000">&times;</span>
+            <span onclick="closePremiumModal()" style="position:absolute; top:10px; right:20px; font-size:40px; cursor:pointer; color:#fff; font-weight:bold; z-index:100; text-shadow: 2px 2px 4px #000;">&times;</span>
             
-            <div style="text-align:center; margin-bottom:20px;">
-                ${getSmartImage(biz.imageid)}
+            <div style="margin: -40px -40px 20px -40px; height: 250px; overflow: hidden; border-bottom: 4px solid #d4af37;">
+                ${heroImg.replace('<img', '<img style="width:100%; height:100%; object-fit:cover;"')}
             </div>
 
-            <h2 style="font-family:serif; border-bottom:3px solid #222; color:#222; text-align:center; margin:0 0 15px 0; font-size:2rem;">${biz.name}</h2>
-            
-            <div style="text-align:center; margin-bottom:20px;">
-                <span style="background:#222; color:#fff; padding:5px 20px; font-weight:bold; text-transform:uppercase; font-size:0.9rem;">${biz.town || 'Clay County'}</span>
-            </div>
+            <h2 style="font-family:serif; color:#222; text-align:center; margin-bottom:5px; font-size:2.2rem;">${biz.name}</h2>
+            <p style="text-align:center; color:#666; font-style:italic; margin-bottom:20px;">${biz.category} | ${biz.town}</p>
 
-            <div style="color:#222; line-height:1.6; font-size:1.1rem; text-align:left;">
-                <p><strong>📍 Address:</strong> ${biz.address || 'Contact for Address'}</p>
-                <p><strong>📞 Phone:</strong> ${biz.phone || 'N/A'}</p>
-                <p><strong>📂 Category:</strong> ${biz.category || 'Local Business'}</p>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; text-align: left;">
+                
+                <div style="background: #fff; padding: 15px; border: 1px solid #ddd;">
+                    <h3 style="margin-top:0; border-bottom: 2px solid #222; font-size: 1rem;">CONTACT DETAILS</h3>
+                    <p><strong>📍 Address:</strong><br>${biz.address || 'Contact for Address'}</p>
+                    <p><strong>📞 Phone:</strong><br>${biz.phone || 'N/A'}</p>
+                    <p><strong>⏰ Hours:</strong><br>${biz.hours || 'See Website'}</p>
+                </div>
+
+                <div style="border: 1px solid #ddd; background: #eee; height: 200px;">
+                    <iframe width="100%" height="100%" frameborder="0" style="border:0" 
+                        src="https://www.google.com/maps/embed/v1/place?key=YOUR_API_KEY_HERE&q=${mapAddress}" allowfullscreen>
+                    </iframe>
+                </div>
             </div>
 
             <a href="tel:${(biz.phone || "").replace(/\D/g,'')}" 
-               style="display:block; background: linear-gradient(45deg, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c); color:#222 !important; text-align:center; padding:18px; margin-top:30px; text-decoration:none; font-weight:900; border:1px solid #222; text-transform:uppercase; letter-spacing:2px; box-shadow: 2px 2px 5px rgba(0,0,0,0.2);">
+               style="display:block; background: linear-gradient(45deg, #bf953f, #fcf6ba, #aa771c); color:#222 !important; text-align:center; padding:18px; margin-top:25px; text-decoration:none; font-weight:900; border:1px solid #222; text-transform:uppercase; letter-spacing:2px;">
                CALL BUSINESS NOW
             </a>
         `;
@@ -141,10 +148,7 @@ function openPremiumModal(encodedName) {
     }
 }
 
-function closePremiumModal() {
-    const modal = document.getElementById('premium-modal');
-    if (modal) modal.style.display = 'none';
-}
+
 
 // 6. FILTERS
 function applyFilters() {
