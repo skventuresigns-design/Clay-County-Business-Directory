@@ -97,7 +97,30 @@ body {
     box-shadow: 8px 8px 0px rgba(0,0,0,0.15);
 }
 
-/* Tiers */
+/* --- PLUS TIER RIBBON --- */
+.card.plus {
+    border: 2px solid #2e7d32 !important; /* Professional Green border */
+    position: relative;
+    overflow: hidden; /* This is vital to keep the ribbon from "bleeding" out */
+}
+
+.card.plus::after {
+    content: "PLUS MEMBER";
+    position: absolute;
+    top: 10px;
+    right: -35px; /* Adjust to fit the longer text */
+    background: #2e7d32; /* Hunter Green */
+    color: white;
+    font-size: 9px;
+    font-weight: bold;
+    padding: 5px 40px;
+    transform: rotate(45deg);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    z-index: 10;
+}
+
+
+/* Premium Tier */
 .card.premium { 
     border: 3px solid var(--gold-premium) !important; /* Thicker Gold Border */
     box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3); 
