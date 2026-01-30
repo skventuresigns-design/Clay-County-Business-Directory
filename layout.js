@@ -106,7 +106,7 @@ function openPremiumModal(encodedName) {
     if (modalContainer) {
         // We are writing the HTML directly here so nothing can "break" it in other files
         modalContainer.innerHTML = `
-            <span onclick="closePremiumModal()" style="position:absolute; top:10px; right:20px; font-size:40px; cursor:pointer; color:#222; font-weight:bold;">&times;</span>
+            <span onclick="closePremiumModal()" style="position:absolute; top:5px; right:15px; font-size:50px; cursor:pointer; color:#222; font-weight:bold; line-height; z-index:100000">&times;</span>
             
             <div style="text-align:center; margin-bottom:20px;">
                 ${getSmartImage(biz.imageid)}
