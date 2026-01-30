@@ -52,38 +52,46 @@ function displayData(data) {
     if (!grid) return;
     grid.innerHTML = '';
 
-    data.forEach((biz, index) => { // Added 'index' here
+    data.forEach(biz => {
         const tier = (biz.tier || biz.Tier || 'basic').toLowerCase().trim();
-        const bizName = biz.name || biz.Name || "Unnamed Business";
+        const bizName = (biz.name || biz.Name || "Unnamed Business").trim();
         const town = (biz.town || biz.Town || "Clay County").trim();
         const townClass = town.toLowerCase().replace(/\s+/g, '-');
-
         const phone = biz.phone || biz.Phone || "";
         const phoneHtml = tier !== 'basic' ? `<p class="phone">${phone}</p>` : '';
+
+        // We use encodeURIComponent to make symbols like & and ' safe!
+        const safeName = encodeURIComponent(bizName);
 
         const card = document.createElement('div');
         card.className = `card ${tier}`;
 
         card.innerHTML = `
-        <div class="logo-box">${getSmartImage(biz.imageid || biz.ImageID)}</div>
-        <h3>${bizName}</h3>
-        <div class="town-bar ${townClass}-bar">${town}</div>
-        ${phoneHtml} 
-        <p class="category-tag"><i>${biz.category || biz.Category || ""}</i></p>
-        ${tier === 'premium' ? `<button class="read-more-btn" onclick="openPremiumModal(${index})">Read More</button>` : ''}
-    `;
-    grid.appendChild(card);
-});
+            <div class="logo-box">${getSmartImage(biz.imageid || biz.ImageID)}</div>
+            <h3>${bizName}</h3>
+            <div class="town-bar ${townClass}-bar">${town}</div>
+            ${phoneHtml} 
+            <p class="category-tag"><i>${biz.category || biz.Category || ""}</i></p>
+            ${tier === 'premium' ? `<button class="read-more-btn" onclick="openPremiumModal('${safeName}')">Read More</button>` : ''}
+        `;
+        grid.appendChild(card);
+    });
 }
 
 
 // 4. THE PREMIUM POP-OUT (Town Bar & Website Link Fix)
-function openPremiumModal(index) {
-    // Grab the business data using the number sent by the button
-    const biz = masterData[index];
+function openPremiumModal(safeName) {
+    // 1. Decode the name (e.g., change 'S%26K' back to 'S&K')
+    const nameToFind = decodeURIComponent(safeName).toLowerCase().trim();
+    
+    // 2. Find the business in the MASTER list, not the filtered screen list
+    const biz = masterData.find(b => {
+        const currentName = (b.name || b.Name || "").toLowerCase().trim();
+        return currentName === nameToFind;
+    });
     
     if (!biz) {
-        console.error("No data found for index:", index);
+        console.error("Could not find:", nameToFind);
         return;
     }
 
