@@ -205,3 +205,12 @@ function populateTownFilter(data) {
         select.appendChild(opt);
     });
 }
+
+// Ensure this is at the end of layout.js
+function closePremiumModal() {
+    console.log("Closing modal...");
+    const modal = document.getElementById('premium-modal');
+    if (modal) {
+        modal.style.display = 'none';
+    }
+}
