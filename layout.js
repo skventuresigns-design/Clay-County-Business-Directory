@@ -84,22 +84,20 @@ function openPremiumModal(cleanID) {
     
     if (!biz) return;
 
-    // --- SMART HOURS LOGIC ---
-    let rawHours = (biz.hours || biz.Hours || "").trim();
-    // If empty, N/A, or none, show "Please Call for Hours"
-    let displayHours = (rawHours === "" || rawHours.toLowerCase() === "n/a" || rawHours.toLowerCase() === "none") 
-        ? "Please Call for Hours" 
-        : rawHours;
-
     const modal = document.getElementById('premium-modal');
     const modalContainer = document.querySelector('#premium-modal .modal-content');
     
     if (modalContainer) {
+        // --- DATA NORMALIZATION ---
         const town = (biz.town || biz.Town || "Clay County").trim();
         const townClass = town.toLowerCase().replace(/\s+/g, '-');
         const address = biz.address || biz.Address || "Contact for Address";
         const phone = biz.phone || biz.Phone || "N/A";
-        
+        let rawHours = (biz.hours || biz.Hours || "").trim();
+        let displayHours = (rawHours === "" || rawHours.toLowerCase() === "n/a" || rawHours.toLowerCase() === "none") 
+            ? "Please Call for Hours" 
+            : rawHours;
+
         let rawWeb = (biz.website || biz.Website || "").trim();
         let websiteUrl = (rawWeb && !rawWeb.startsWith('http')) ? `https://${rawWeb}` : rawWeb;
         let rawFB = (biz.facebook || biz.Facebook || "").trim();
@@ -108,8 +106,14 @@ function openPremiumModal(cleanID) {
         const mapAddress = encodeURIComponent(`${address}, ${town}, IL`);
 
         modalContainer.innerHTML = `
-            <span onclick="closePremiumModal()" style="position:absolute; top:15px; right:20px; font-size:45px; cursor:pointer; color:#222; font-weight:bold; z-index:999999; line-height:0.8;">×</span>
+            <span onclick="closePremiumModal()" style="position:absolute; top:10px; right:15px; font-size:45px; cursor:pointer; color:#222; font-weight:bold; z-index:1000000; line-height:0.8;">×</span>
             
+            <div style="margin: -40px -40px 25px -40px; text-align: center;">
+                <div style="background: #d4af37; color: #fff; padding: 12px 0; font-weight: bold; text-transform: uppercase; letter-spacing: 4px; font-size: 0.9rem; box-shadow: 0 4px 6px rgba(0,0,0,0.1); border-bottom: 2px solid #b38728;">
+                    PREMIUM COMMUNITY PARTNER
+                </div>
+            </div>
+
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-bottom: 10px;">
                 <div style="text-align: center;">
                     <div style="height: 100px; margin-bottom: 12px; display:flex; align-items:center; justify-content:center;">
@@ -127,13 +131,7 @@ function openPremiumModal(cleanID) {
                 </div>
             </div>
 
-            <div style="position: relative; margin: 20px -40px; text-align: center;">
-                <div style="background: #d4af37; color: #fff; padding: 5px 0; font-weight: bold; text-transform: uppercase; letter-spacing: 3px; font-size: 0.8rem; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
-                    PREMIUM COMMUNITY PARTNER
-                </div>
-            </div>
-
-            <div class="town-bar ${townClass}-bar" style="margin: 0 -40px 20px -40px; width: calc(100% + 80px); text-align: center; padding: 10px 0; font-weight: bold; text-transform: uppercase;">
+            <div class="town-bar ${townClass}-bar" style="margin: 15px -40px; width: calc(100% + 80px); text-align: center; padding: 10px 0; font-weight: bold; text-transform: uppercase;">
                 ${town}
             </div>
             
@@ -142,7 +140,7 @@ function openPremiumModal(cleanID) {
                     <iframe width="100%" height="100%" frameborder="0" src="https://maps.google.com/maps?q=${mapAddress}&output=embed"></iframe>
                 </div>
                 <div style="background:#fff; border: 1px solid #222; padding: 15px; font-size: 0.85rem;">
-                    <h4 style="margin:0 0 10px 0; border-bottom: 1px solid #ccc; padding-bottom: 5px;">HOURS OF OPERATION</h4>
+                    <h4 style="margin:0 0 10px 0; border-bottom: 1px solid #ccc; padding-bottom: 5px;">HOURS</h4>
                     <div style="line-height:1.4;">${displayHours}</div>
                 </div>
             </div>
@@ -156,6 +154,7 @@ function openPremiumModal(cleanID) {
         modal.style.display = 'flex';
     }
 }
+
 
 
 // 5. GLOBAL HELPERS
