@@ -47,39 +47,15 @@
         <h1>Clay County Directory</h1>
         <span class="masthead-towns">Bible Grove • Clay City • Flora • Louisville • Iola • Sailor Springs • Xenia</span>
 
-        <div class="newspaper-meta single-row">
+        <div class="newspaper-meta">
             <div class="meta-item left-meta">VOL. 1 — NO. 1 | <span id="masthead-date"></span></div>
-            
-            <div class="meta-item">
-                <select id="town-select" onchange="applyFilters()">
-                    <option value="All">📍 All Towns</option>
-                    <option value="Flora">Flora</option>
-                    <option value="Louisville">Louisville</option>
-                    <option value="Clay City">Clay City</option>
-                    <option value="Xenia">Xenia</option>
-                    <option value="Sailor Springs">Sailor Springs</option>
-                    <option value="Bible Grove">Bible Grove</option>
-                    <option value="Iola">Iola</option>
-                </select>
-            </div>
-            
+            <div class="meta-item"><select id="town-select" onchange="applyFilters()"></select></div>
             <div class="meta-item center-header">
                 <span class="directory-pages">BUSINESS DIRECTORY PAGES</span>
                 <div id="listing-count" class="count-text">Loading...</div>
             </div>
-            
-            <div class="meta-item">
-                <select id="cat-select" onchange="applyFilters()">
-                    <option value="All">📂 All Industries</option>
-                    <option value="Services">Services</option>
-                    <option value="Dining">Restaurants & Dining</option>
-                    <option value="Retail">Shopping</option>
-                </select>
-            </div>
-            
-            <div class="meta-item right-meta">
-                <span id="weather-box" class="weather-text"></span>
-            </div>
+            <div class="meta-item"><select id="cat-select" onchange="applyFilters()"></select></div>
+            <div class="meta-item right-meta"><span id="weather-box"></span></div>
         </div>
     </header>
 
