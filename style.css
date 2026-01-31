@@ -37,7 +37,7 @@ body {
     background: #ffffff;
     display: flex;
     align-items: center;
-    padding: 15px 25px 15px 60px; /* Custom 60px Logo Padding */
+    padding: 15px 25px 15px 25%; /* Custom 60px Logo Padding */
     box-shadow: 0 2px 10px rgba(0,0,0,0.05);
     position: sticky;
     top: 0;
