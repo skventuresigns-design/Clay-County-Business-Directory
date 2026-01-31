@@ -1,10 +1,10 @@
 /**
- * LAYOUT.JS - The Directory Engine (Master V2)
+ * LAYOUT.JS - The Directory Engine (Master V3 - Custom Domain Edition)
  */
 
 let masterData = [];
 
-// 1. STARTUP
+// 1. STARTUP & INITIALIZATION
 document.addEventListener('DOMContentLoaded', () => {
     if (typeof updateMastheadDate === 'function') updateMastheadDate();
     if (typeof getLocalWeather === 'function') getLocalWeather();
@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-// 2. FETCH DATA
+// 2. FETCH DATA FROM GOOGLE SHEETS
 function initDirectory() {
     const grid = document.getElementById('directory-grid');
     if (!grid) return;
@@ -45,8 +45,7 @@ function initDirectory() {
     });
 }
 
-
-// 3. RENDER LISTINGS (Simplified for better Premium matching)
+// 3. RENDER LISTINGS GRID
 function displayData(data) {
     const grid = document.getElementById('directory-grid');
     if (!grid) return;
@@ -74,8 +73,7 @@ function displayData(data) {
     });
 }
 
-
-// 4. THE PREMIUM POP-OUT (Town Bar & Website Link Fix)
+// 4. THE PREMIUM POP-OUT (Custom Header & White X)
 function openPremiumModal(cleanID) {
     const biz = masterData.find(b => {
         const checkName = (b.name || b.Name || "").replace(/[^a-zA-Z0-9]/g, '');
@@ -88,16 +86,18 @@ function openPremiumModal(cleanID) {
     const modalContainer = document.querySelector('#premium-modal .modal-content');
     
     if (modalContainer) {
-        // --- DATA NORMALIZATION ---
         const town = (biz.town || biz.Town || "Clay County").trim();
         const townClass = town.toLowerCase().replace(/\s+/g, '-');
         const address = biz.address || biz.Address || "Contact for Address";
         const phone = biz.phone || biz.Phone || "N/A";
+        
+        // Smart Hours Logic
         let rawHours = (biz.hours || biz.Hours || "").trim();
         let displayHours = (rawHours === "" || rawHours.toLowerCase() === "n/a" || rawHours.toLowerCase() === "none") 
             ? "Please Call for Hours" 
             : rawHours;
 
+        // Links Logic
         let rawWeb = (biz.website || biz.Website || "").trim();
         let websiteUrl = (rawWeb && !rawWeb.startsWith('http')) ? `https://${rawWeb}` : rawWeb;
         let rawFB = (biz.facebook || biz.Facebook || "").trim();
@@ -155,8 +155,56 @@ function openPremiumModal(cleanID) {
     }
 }
 
+// 5. SEARCH & QUICK-FILTER LOGIC
+function toggleSearchBar() {
+    const wrapper = document.getElementById('search-input-wrapper');
+    wrapper.style.display = (wrapper.style.display === 'none') ? 'block' : 'none';
+    if(wrapper.style.display === 'block') document.getElementById('directory-search').focus();
+}
 
-// 5. GLOBAL HELPERS
+function searchBusinesses() {
+    const term = document.getElementById('directory-search').value.toLowerCase();
+    const filtered = masterData.filter(biz => {
+        const name = (biz.name || biz.Name || "").toLowerCase();
+        const cat = (biz.category || biz.Category || "").toLowerCase();
+        const twn = (biz.town || biz.Town || "").toLowerCase();
+        return name.includes(term) || cat.includes(term) || twn.includes(term);
+    });
+    displayData(filtered);
+    updateListingCount(filtered.length);
+}
+
+function quickFilterByCategory(catName) {
+    // Highlight the active header link
+    document.querySelectorAll('.main-menu-links a').forEach(a => a.classList.remove('active'));
+    event.target.classList.add('active');
+
+    const filtered = masterData.filter(biz => {
+        const bCat = (biz.category || biz.Category || "").toLowerCase();
+        return bCat.includes(catName.toLowerCase());
+    });
+    displayData(filtered);
+    updateListingCount(filtered.length);
+}
+
+function filterByTier(tier) {
+    document.querySelectorAll('.tier-btn').forEach(btn => btn.classList.remove('active'));
+    event.target.classList.add('active');
+
+    if (tier === 'all') {
+        displayData(masterData);
+        updateListingCount(masterData.length);
+    } else {
+        const filtered = masterData.filter(biz => {
+            const bTier = (biz.tier || biz.Tier || "").toLowerCase().trim();
+            return bTier === tier;
+        });
+        displayData(filtered);
+        updateListingCount(filtered.length);
+    }
+}
+
+// 6. GLOBAL HELPERS
 function closePremiumModal() {
     const modal = document.getElementById('premium-modal');
     if (modal) modal.style.display = 'none';
@@ -170,7 +218,6 @@ function getSmartImage(id) {
     return `<img src="${repo}${id.toString().trim()}" alt="Logo" onerror="this.src='${placeholder}'">`;
 }
 
-// 6. FILTERS & COUNT (Remaining code as before...)
 function applyFilters() {
     const selectedTown = document.getElementById('town-select').value;
     const selectedCat = document.getElementById('cat-select').value;
@@ -182,14 +229,17 @@ function applyFilters() {
     displayData(filtered);
     updateListingCount(filtered.length);
 }
+
 function updateListingCount(count) {
     const el = document.getElementById('listing-count');
     if (el) el.innerText = `${count} Listings Found`;
 }
+
 function updateMastheadDate() {
     const el = document.getElementById('masthead-date');
     if (el) el.innerText = new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
 }
+
 async function getLocalWeather() {
     const el = document.getElementById('weather-box');
     if (!el) return;
@@ -199,6 +249,7 @@ async function getLocalWeather() {
         if (data.current_weather) el.innerHTML = ` | 🌡️ Flora: ${Math.round((data.current_weather.temperature * 9/5) + 32)}°F`;
     } catch (e) {}
 }
+
 function populateCategoryFilter(data) {
     const select = document.getElementById('cat-select');
     if (!select) return;
@@ -211,6 +262,7 @@ function populateCategoryFilter(data) {
         select.appendChild(opt);
     });
 }
+
 function populateTownFilter(data) {
     const select = document.getElementById('town-select');
     if (!select) return;
@@ -222,25 +274,4 @@ function populateTownFilter(data) {
         opt.textContent = town;
         select.appendChild(opt);
     });
-}
-
-
-// QUICK-FILTER BY TIER
-function filterByTier(tier) {
-    // 1. Highlight the active button
-    document.querySelectorAll('.tier-btn').forEach(btn => btn.classList.remove('active'));
-    event.target.classList.add('active');
-
-    // 2. Filter the data
-    if (tier === 'all') {
-        displayData(masterData);
-        updateListingCount(masterData.length);
-    } else {
-        const filtered = masterData.filter(biz => {
-            const bTier = (biz.tier || biz.Tier || "").toLowerCase().trim();
-            return bTier === tier;
-        });
-        displayData(filtered);
-        updateListingCount(filtered.length);
-    }
 }
