@@ -106,7 +106,7 @@ function openPremiumModal(cleanID) {
         const mapAddress = encodeURIComponent(`${address}, ${town}, IL`);
 
         modalContainer.innerHTML = `
-            <span onclick="closePremiumModal()" style="position:absolute; top:10px; right:15px; font-size:45px; cursor:pointer; color:#222; font-weight:bold; z-index:1000000; line-height:0.8;">×</span>
+            <span onclick="closePremiumModal()" style="position:absolute; top:8px; right:15px; font-size:45px; cursor:pointer; color:#fff; font-weight:bold; z-index:1000001; line-height:0.8;">×</span>
             
             <div style="margin: -40px -40px 25px -40px; text-align: center;">
                 <div style="background: #d4af37; color: #fff; padding: 12px 0; font-weight: bold; text-transform: uppercase; letter-spacing: 4px; font-size: 0.9rem; box-shadow: 0 4px 6px rgba(0,0,0,0.1); border-bottom: 2px solid #b38728;">
@@ -154,7 +154,6 @@ function openPremiumModal(cleanID) {
         modal.style.display = 'flex';
     }
 }
-
 
 
 // 5. GLOBAL HELPERS
