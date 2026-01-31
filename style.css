@@ -5,10 +5,11 @@
     --ink-black: #222222;
     --gold-premium: #d4af37;
     --plus-green: #2e7d32;
+    --smlc-blue: #2ea3f2;
     --shadow: rgba(0,0,0,0.1);
 }
 
-* { box-sizing: border-box; } /* Prevents padding from breaking widths */
+* { box-sizing: border-box; }
 
 body {
     background-color: var(--news-gray);
@@ -23,66 +24,110 @@ body {
     padding: 0 20px 40px 20px;
 }
 
-/* --- 2. NAVIGATION & MASTHEAD --- */
-.divi-style-nav {
-    background-color: #ffffff; /* Or your preferred header color */
-    border-bottom: 1px solid #eeeeee;
-    padding: 10px 0;
+/* --- 2. DUAL-ROW NAVIGATION --- */
+
+/* TOP BAR (SMLC Network - Blue) */
+.top-nav-bar {
+    background-color: var(--smlc-blue);
+    padding: 10px 25px;
+    text-align: right;
+}
+
+.top-nav-links a {
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: bold;
+    margin-left: 20px;
+    font-family: Arial, sans-serif;
+}
+
+/* MAIN BAR (Directory Branding - White) */
+.main-nav-bar {
+    background: #ffffff;
+    display: flex;
+    align-items: center;
+    padding: 15px 25px 15px 50px; /* 50px left for logo padding */
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
     position: sticky;
     top: 0;
     z-index: 9999;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 
-.nav-container {
-    max-width: 95%;
-    margin: 0 auto;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.nav-logo img {
-    height: 50px; /* Adjust based on your logo shape */
+.logo-area img { 
+    height: 60px; 
     display: block;
 }
 
-.nav-links a {
-    color: #333;
+.main-menu-links { 
+    margin-left: 40px; 
+    flex-grow: 1; 
+}
+
+.main-menu-links a {
+    color: #000000;
     text-decoration: none;
-    font-weight: 600;
-    margin-left: 25px;
-    font-family: 'Open Sans', Arial, sans-serif;
+    font-weight: 700;
+    margin-right: 25px;
     font-size: 15px;
-    transition: color 0.3s ease;
+    transition: color 0.3s;
+    font-family: Arial, sans-serif;
 }
 
-.nav-links a:hover {
-    color: #d4af37; /* Match your premium gold color on hover */
+.main-menu-links a:hover, 
+.main-menu-links a.active {
+    color: var(--smlc-blue);
 }
 
-/* --- Mobile Menu Tweak --- */
-@media (max-width: 768px) {
-    .nav-container {
-        flex-direction: column;
-        gap: 10px;
-    }
-    .nav-links {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-    }
-    .nav-links a {
-        margin: 5px 10px;
-    }
+/* SEARCH SECTION */
+.search-area { position: relative; }
+#search-toggle {
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+#search-input-wrapper {
+    position: absolute;
+    right: 0;
+    top: 45px;
+    background: white;
+    padding: 12px;
+    border: 1px solid var(--ink-black);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    z-index: 10000;
+}
+
+#directory-search {
+    padding: 8px;
+    border: 1px solid #ccc;
+    width: 220px;
+    font-family: Arial, sans-serif;
+}
+
+/* --- 3. MASTHEAD & NEWSPAPER STYLING --- */
+.main-title {
+    text-align: center;
+    padding: 20px 0;
 }
 
 .main-title h1 {
-    text-align: center;
     font-size: clamp(2.5rem, 8vw, 4.5rem);
-    margin: 20px 0 10px;
+    margin: 10px 0 5px;
     text-transform: uppercase;
     letter-spacing: -2px;
+}
+
+.masthead-towns {
+    display: block;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    font-size: 12px;
+    color: var(--ink-black);
+    font-weight: bold;
+    margin-top: -5px;
+    margin-bottom: 25px;
 }
 
 .newspaper-meta {
@@ -108,7 +153,7 @@ body {
 .left-meta { text-align: left; padding-left: 15px; }
 .right-meta { text-align: right; padding-right: 15px; }
 
-/* --- 3. TIER FILTER BUTTONS --- */
+/* --- 4. TIER FILTERS & CARDS --- */
 .tier-filter-container {
     display: flex;
     justify-content: center;
@@ -137,7 +182,6 @@ body {
 .premium-btn { border-color: var(--gold-premium); color: #8a6d07; }
 .premium-btn.active { background: var(--gold-premium); color: #fff; }
 
-/* --- 4. GRID & CARDS --- */
 #directory-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -178,7 +222,7 @@ body {
 .logo-box { height: 100px; display: flex; align-items: center; justify-content: center; margin-bottom: 15px; }
 .logo-box img { max-width: 100%; max-height: 100%; object-fit: contain; }
 
-/* --- 5. BUTTONS & BARS --- */
+/* --- 5. BUTTONS & TOWN BARS --- */
 .read-more-btn {
     background: linear-gradient(45deg, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c);
     color: #222;
@@ -206,6 +250,8 @@ body {
 .louisville-bar { background: #cc0000; color: #fff; }
 .clay-city-bar { background: #0044cc; color: #fff; }
 .xenia-bar, .sailor-springs-bar { background: #000; color: #fff; }
+/* New towns */
+.bible-grove-bar, .iola-bar { background: #444; color: #fff; }
 
 /* --- 6. MODAL SYSTEM --- */
 .modal-overlay {
@@ -234,8 +280,20 @@ body {
 
 /* --- 7. RESPONSIVENESS --- */
 @media (max-width: 768px) {
+    .main-nav-bar {
+        flex-direction: column;
+        padding: 15px;
+        text-align: center;
+    }
+    .main-menu-links {
+        margin: 15px 0;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
+    }
+    .main-menu-links a { margin-right: 0; }
     .newspaper-meta { flex-direction: column; gap: 15px; }
-    .site-wrapper { padding: 0 10px 30px; }
     #directory-grid { grid-template-columns: 1fr; }
     .modal-content { padding: 30px 20px; }
 }
